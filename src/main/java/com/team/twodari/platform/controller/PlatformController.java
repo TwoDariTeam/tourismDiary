@@ -1,7 +1,7 @@
-package com.team.twodari.faltform.controller;
+package com.team.twodari.platform.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class FlatFormController {
+public class PlatformController {
 }
