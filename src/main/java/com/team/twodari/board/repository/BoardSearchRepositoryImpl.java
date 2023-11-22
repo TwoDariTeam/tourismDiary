@@ -23,18 +23,47 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<BoardEntityDto> findOrderByCreateDate(int page) {
-        List<BoardEntityDto> boardEntities = jpaQueryFactory.select(Projections.constructor(
+    public Slice<BoardEntityDto> findContains(Integer page, String word) {
+
+        List<BoardEntityDto> boardEntities = jpaQueryFactory
+                .select(Projections.constructor(
                         BoardEntityDto.class,
                         boardEntity.boardSeq,
                         boardEntity.categorySeq,
                         boardEntity.author,
-                        boardEntity.title
+                        boardEntity.title,
+                        pointEntity.point.sum()
                 ))
                 .from(boardEntity)
-                .offset(page)
+                .leftJoin(pointEntity).on(isEqualBoardSeq())
+                .where(isContainsWord(word))
+                .groupBy(boardEntity.boardSeq)
+                .orderBy(pointEntity.point.sum().desc())
+                .offset(page * PAGE_SIZE)
                 .limit(PAGE_SIZE + 1)
+                .fetch();
+
+        return toSlice(boardEntities);
+
+    }
+
+    @Override
+    public Slice<BoardEntityDto> findOrderByCreateDate(Integer page) {
+        List<BoardEntityDto> boardEntities = jpaQueryFactory
+                .select(Projections.constructor(
+                        BoardEntityDto.class,
+                        boardEntity.boardSeq,
+                        boardEntity.categorySeq,
+                        boardEntity.author,
+                        boardEntity.title,
+                        pointEntity.point.sum()
+                ))
+                .from(boardEntity)
+                .leftJoin(pointEntity).on(isEqualBoardSeq())
+                .groupBy(boardEntity.boardSeq)
                 .orderBy(boardEntity.createTime.desc())
+                .offset(page * PAGE_SIZE)
+                .limit(PAGE_SIZE + 1)
                 .fetch();
 
 
@@ -43,30 +72,36 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
     }
 
     @Override
-    public Slice<BoardEntityDto> findOrderByLike(int page) {
-        List<BoardEntityDto> boardEntities = jpaQueryFactory.select(Projections.constructor(
+    public Slice<BoardEntityDto> findOrderByPoint(Integer page) {
+        List<BoardEntityDto> boardEntities = jpaQueryFactory
+                .select(Projections.constructor(
                         BoardEntityDto.class,
                         boardEntity.boardSeq,
                         boardEntity.categorySeq,
                         boardEntity.author,
-                        boardEntity.title
+                        boardEntity.title,
+                        pointEntity.point.sum()
                 ))
                 .from(boardEntity)
-                .join(pointEntity).on(isEqualBoardSeq())
-                .offset(page)
+                .leftJoin(pointEntity).on(isEqualBoardSeq())
+                .groupBy(boardEntity.boardSeq)
+                .orderBy(pointEntity.point.sum().desc())
+                .offset(page * PAGE_SIZE)
                 .limit(PAGE_SIZE + 1)
-                .orderBy(pointEntity.point.desc())
                 .fetch();
-
 
         return toSlice(boardEntities);
     }
 
-    private static BooleanExpression isEqualBoardSeq() {
+    private BooleanExpression isContainsWord(String word) {
+        return boardEntity.title.contains(word);
+    }
+
+    private BooleanExpression isEqualBoardSeq() {
         return boardEntity.boardSeq.eq(pointEntity.boardSeq);
     }
 
-    private static SliceImpl<BoardEntityDto> toSlice(List<BoardEntityDto> boardEntities) {
+    private SliceImpl<BoardEntityDto> toSlice(List<BoardEntityDto> boardEntities) {
         boolean hasNext = boardEntities.size() > PAGE_SIZE;
 
         if (hasNext) {
