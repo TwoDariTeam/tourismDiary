@@ -1,6 +1,6 @@
 package com.team.twodari.image.entity;
 
-import com.team.twodari.common.entity.MutableBaseEntity;
+import com.team.twodari.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +14,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ImageEntity extends MutableBaseEntity {
+public class ImageEntity extends BaseEntity {
     // 이미지 일련번호
     @Id
     @Column(columnDefinition = "INT")
