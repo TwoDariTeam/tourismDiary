@@ -1,6 +1,6 @@
 package com.team.twodari.tag.entity;
 
-import com.team.twodari.common.entity.MutableBaseEntity;
+import com.team.twodari.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +14,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TagEntity extends MutableBaseEntity {
+public class TagEntity extends BaseEntity {
     // 태그 일련번호
     @Id
     @Column(columnDefinition = "INT")

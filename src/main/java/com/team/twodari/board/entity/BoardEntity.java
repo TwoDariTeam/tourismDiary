@@ -1,6 +1,6 @@
 package com.team.twodari.board.entity;
 
-import com.team.twodari.common.entity.MutableBaseEntity;
+import com.team.twodari.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +14,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardEntity extends MutableBaseEntity {
+public class BoardEntity extends BaseEntity {
     //시퀀스 네임 찾아서 여기서 주기.
     // 게시판 일련번호
     @Id

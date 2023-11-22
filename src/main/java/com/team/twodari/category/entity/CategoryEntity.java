@@ -1,6 +1,6 @@
 package com.team.twodari.category.entity;
 
-import com.team.twodari.common.entity.MutableBaseEntity;
+import com.team.twodari.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,7 +12,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CategoryEntity extends MutableBaseEntity {
+public class CategoryEntity extends BaseEntity {
     // 카테고리 일련번호
     @Id
     @Column(columnDefinition = "INT")
