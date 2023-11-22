@@ -42,7 +42,7 @@ public class UserEntity extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(128)")
     private String password;
 
-    // 삭제플래그
+    // 삭제플래그.
     @Null
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
