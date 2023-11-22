@@ -7,6 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+      format_sql: true
     generate-ddl: true
 
   security:
@@ -14,7 +15,12 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
-
+jwt:
+  header: Authorization
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  token-validity-in-seconds: 86400
+  secret2: asdc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  token-validity-in-seconds2: 97400
 #    oauth2:
 #      client:
 #        registration:
