@@ -14,13 +14,12 @@ public class PlatformService {
 
     private final BoardSearchService boardSearchService;
 
-    public Slice<BoardEntityDto> getMainPageData(int page, int condition) {
-        Slice<BoardEntityDto> invalidCondition = switch (condition) {
+    public Slice<BoardEntityDto> getMainPageData(Integer page, int condition) {
+        return switch (condition) {
             case 0 -> boardSearchService.findOrderByCreateDate(page);
             case 1 -> boardSearchService.findOrderByLike(page);
             default -> throw new IllegalArgumentException("Invalid condition");
         };
-        return invalidCondition;
     }
 
 }

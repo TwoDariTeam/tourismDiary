@@ -14,12 +14,12 @@ public class BoardSearchService {
     private final BoardRepository boardRepository;
 
     @Transactional(readOnly = true)
-    public Slice<BoardEntityDto> findOrderByCreateDate(int page) {
+    public Slice<BoardEntityDto> findOrderByCreateDate(Integer page) {
         return boardRepository.findOrderByCreateDate(page);
     }
 
     @Transactional(readOnly = true)
-    public Slice<BoardEntityDto> findOrderByLike(int page) {
-        return boardRepository.findOrderByLike(page);
+    public Slice<BoardEntityDto> findOrderByLike(Integer page) {
+        return boardRepository.findOrderByPoint(page);
     }
 }

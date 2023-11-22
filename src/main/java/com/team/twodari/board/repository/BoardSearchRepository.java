@@ -4,6 +4,9 @@ import com.team.twodari.board.dto.BoardEntityDto;
 import org.springframework.data.domain.Slice;
 
 public interface BoardSearchRepository {
-    Slice<BoardEntityDto> findOrderByCreateDate(int page);
-    Slice<BoardEntityDto> findOrderByLike(int page);
+
+    Slice<BoardEntityDto> findContains(Integer page, String word);
+
+    Slice<BoardEntityDto> findOrderByCreateDate(Integer page);
+    Slice<BoardEntityDto> findOrderByPoint(Integer page);
 }

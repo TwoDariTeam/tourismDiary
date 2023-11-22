@@ -14,9 +14,9 @@ public class PlatformController {
 
 
     private final PlatformService platformService;
-    @GetMapping()
-    public Slice<BoardEntityDto> main(@RequestParam(defaultValue = "0") int page,
-                                      @RequestParam(defaultValue = "0") int condition) {
+    @GetMapping("/")
+    public Slice<BoardEntityDto> main(@RequestParam(defaultValue = "0") Integer page,
+                                      @RequestParam(defaultValue = "0") Integer condition) {
         return platformService.getMainPageData(page,condition);
     }
 
