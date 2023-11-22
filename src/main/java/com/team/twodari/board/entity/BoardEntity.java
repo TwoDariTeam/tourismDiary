@@ -41,5 +41,4 @@ public class BoardEntity extends MutableBaseEntity {
     private String deleted;
 
 
-
 }

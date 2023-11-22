@@ -18,8 +18,8 @@ import java.util.Map;
 
 public class JwtFilter extends GenericFilterBean {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     private TokenProvider tokenProvider;
 
     public JwtFilter(TokenProvider tokenProvider) {
@@ -61,8 +61,8 @@ public class JwtFilter extends GenericFilterBean {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
-            }
-        return null;
         }
-
+        return null;
     }
+
+}

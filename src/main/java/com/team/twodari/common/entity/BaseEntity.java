@@ -14,11 +14,11 @@ public abstract class BaseEntity {
 
     // 생성 이름
     @CreatedBy
-    @Column(updatable = false,columnDefinition="DATETIME")
+    @Column(updatable = false, columnDefinition = "DATETIME")
     private String createName;
 
     // 수정 이름
     @LastModifiedBy
-    @Column(updatable = false,columnDefinition="DATETIME")
+    @Column(updatable = false, columnDefinition = "DATETIME")
     private String updateName;
 }
