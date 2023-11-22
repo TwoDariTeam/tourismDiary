@@ -2,7 +2,7 @@ package com.team.twodari.common.constant;
 
 public class UserRoleConfig {
     public enum UserRole {
-        GUEST(1), USER(2), ADMIN(3);
+        BLOCK(1),GUEST(2), USER(7), ADMIN(9);
         private Integer level;
 
         UserRole(Integer level) {
