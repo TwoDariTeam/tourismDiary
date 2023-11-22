@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 public abstract class MutableBaseEntity extends BaseEntity {
     // 생성 시간
     @CreatedDate
-    @Column(updatable = true, columnDefinition="VARCHAR(40)")
+    @Column(updatable = true, columnDefinition = "VARCHAR(40)")
     private LocalDateTime createTime;
 
     // 수정 시간
     @LastModifiedDate
-    @Column(updatable = true, columnDefinition="VARCHAR(40)")
+    @Column(updatable = true, columnDefinition = "VARCHAR(40)")
     private String updateTime;
 
 
