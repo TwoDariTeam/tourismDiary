@@ -41,5 +41,4 @@ public class BoardEntity extends BaseEntity {
     private String deleted;
 
 
-
 }

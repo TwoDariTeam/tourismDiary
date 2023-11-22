@@ -31,6 +31,4 @@ public class ImageEntity extends BaseEntity {
     // 삭제플래그
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
-
-
 }
