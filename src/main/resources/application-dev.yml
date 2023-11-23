@@ -1,0 +1,12 @@
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
+jwt:
+  header: ${JWT.HEADER}
+  secret: ${JWT.SECRET}
+  token-validity-in-seconds: ${JWT.TOKEN-VALIDITY-IN-SECONDS}
+  secret2: ${JWT.SECRET2}
+  token-validity-in-seconds2: ${JWT.TOKEN-VALIDITY-IN-SECONDS2}

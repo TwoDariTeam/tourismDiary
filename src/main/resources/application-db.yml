@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=UTC&useSSL=false
+    username: ${DATABASE.USERNAME}
+    password: ${DATABASE.PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+      format_sql: true
+    generate-ddl: true
