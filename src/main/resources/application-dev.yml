@@ -1,4 +1,3 @@
-
 decorator:
   datasource:
     p6spy:
@@ -10,3 +9,18 @@ jwt:
   token-validity-in-seconds: ${JWT.TOKEN-VALIDITY-IN-SECONDS}
   secret2: ${JWT.SECRET2}
   token-validity-in-seconds2: ${JWT.TOKEN-VALIDITY-IN-SECONDS2}
+
+spring:
+  mustache:
+    prefix: classpath:/templates/
+    servlet:
+      expose-session-attributes: true
+    suffix: .html
+  http:
+    encoding:
+      charset: UTF-8
+
+server:
+  servlet:
+    encoding:
+      force: true
