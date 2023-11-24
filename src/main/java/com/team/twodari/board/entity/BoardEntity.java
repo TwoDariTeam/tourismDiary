@@ -37,5 +37,8 @@ public class BoardEntity extends BaseEntity {
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
 
-
+    public void updateEntity(String title, Integer accessRole) {
+        this.title = title;
+        this.accessRole = accessRole;
+    }
 }
