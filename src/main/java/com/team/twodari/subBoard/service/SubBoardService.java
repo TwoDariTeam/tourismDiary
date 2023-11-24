@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class SubBoardService {
@@ -34,6 +36,10 @@ public class SubBoardService {
         subBoardRepository.save(subBoard);
 
         return subBoard.getSubBoardSeq();
+    }
+
+    public List<SubBoardEntity> getSubBoardsByBoardSeq(Long boardSeq) {
+        return subBoardRepository.findByBoard_BoardSeq(boardSeq);
     }
 
     public Long updateSubBoard(Long boardSeq, Long subBoardSeq, SubBoardUpdateDto updateDto) {
