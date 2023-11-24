@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+    username: root
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+
+
+JWT:
+  HEADER: Authorization
+  SECRET: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
+  TOKEN-VALIDITY-IN-SECONDS: 86400
+  SECRET2: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
+  TOKEN-VALIDITY-IN-SECONDS2: 97400
