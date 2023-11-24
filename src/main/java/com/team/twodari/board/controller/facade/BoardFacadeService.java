@@ -28,7 +28,7 @@ public class BoardFacadeService {
             response.connectTags(tagNames);
         }
 
-        return SliceConverter.toSlice(ownBoardResponse);
+        return SliceConverter.toSlice(ownBoardResponse, page);
     }
 
     public Slice<BoardMyLikedResponse> findMyLikedBoardOrderByCreateDate(String nickname, Integer page){
@@ -41,6 +41,6 @@ public class BoardFacadeService {
             response.connectTags(tagNames);
         }
 
-        return SliceConverter.toSlice(myLikedBoardResponse);
+        return SliceConverter.toSlice(myLikedBoardResponse, page);
     }
 }

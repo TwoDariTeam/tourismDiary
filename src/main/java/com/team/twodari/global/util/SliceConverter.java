@@ -9,13 +9,13 @@ import java.util.List;
 import static com.team.twodari.common.constant.Constant.PAGE_SIZE;
 
 public class SliceConverter {
-    public static <T> SliceImpl<T> toSlice(List<T> response) {
+    public static <T> SliceImpl<T> toSlice(List<T> response, int currentPage) {
         boolean hasNext = response.size() > PAGE_SIZE;
 
         if (hasNext) {
             response.remove(response.size() - 1);
         }
 
-        return new SliceImpl<>(response, Pageable.ofSize(PAGE_SIZE).withPage(PAGE_SIZE), hasNext);
+        return new SliceImpl<>(response, Pageable.ofSize(PAGE_SIZE).withPage(currentPage), hasNext);
     }
 }

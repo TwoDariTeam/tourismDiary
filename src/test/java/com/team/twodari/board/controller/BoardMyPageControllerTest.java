@@ -34,10 +34,11 @@ class BoardMyPageControllerTest extends BaseControllerTest {
         void findOwnBoardOrderByCreateDate() throws Exception {
 
             // Given
+            Integer page = 0;
             BoardOwnResponse boardOwnResponse1 = BoardFixture.findOwnBoardOrderByCreateDate(seq++);
             BoardOwnResponse boardOwnResponse2 = BoardFixture.findOwnBoardOrderByCreateDate(seq++);
             List<BoardOwnResponse> boardOwnResponses = List.of(boardOwnResponse1, boardOwnResponse2);
-            SliceImpl<BoardOwnResponse> response = SliceConverter.toSlice(boardOwnResponses);
+            SliceImpl<BoardOwnResponse> response = SliceConverter.toSlice(boardOwnResponses, page);
 
             when(boardFacadeService.findOwnBoardOrderByCreateDate(any(), anyInt())).thenReturn(response);
 
@@ -61,10 +62,11 @@ class BoardMyPageControllerTest extends BaseControllerTest {
         void findMyLikedBoardOrderByCreateDate() throws Exception {
 
             // Given
+            Integer page = 0;
             BoardMyLikedResponse boardMyLikedResponse1 = BoardFixture.findMyLikedBoardOrderByCreateDate(seq++);
             BoardMyLikedResponse boardMyLikedResponse2 = BoardFixture.findMyLikedBoardOrderByCreateDate(seq++);
             List<BoardMyLikedResponse> boardLikedResponses = List.of(boardMyLikedResponse1, boardMyLikedResponse2);
-            SliceImpl<BoardMyLikedResponse> response = SliceConverter.toSlice(boardLikedResponses);
+            SliceImpl<BoardMyLikedResponse> response = SliceConverter.toSlice(boardLikedResponses, page);
 
             when(boardFacadeService.findMyLikedBoardOrderByCreateDate(any(), anyInt())).thenReturn(response);
 
