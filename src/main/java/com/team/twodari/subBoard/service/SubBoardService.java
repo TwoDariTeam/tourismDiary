@@ -39,7 +39,7 @@ public class SubBoardService {
     }
 
     public List<SubBoardEntity> getSubBoardsByBoardSeq(Long boardSeq) {
-        return subBoardRepository.findByBoard_BoardSeq(boardSeq);
+        return subBoardRepository.findByBoardBoardSeq(boardSeq);
     }
 
     public Long updateSubBoard(Long boardSeq, Long subBoardSeq, SubBoardUpdateDto updateDto) {
