@@ -7,12 +7,8 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team.twodari.board.dto.BoardEntityDto;
-import com.team.twodari.global.util.SliceConverter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -20,9 +16,9 @@ import java.util.List;
 
 import static com.team.twodari.board.entity.QBoardEntity.boardEntity;
 import static com.team.twodari.common.constant.Constant.PAGE_SIZE;
-import static com.team.twodari.global.util.SliceConverter.*;
+import static com.team.twodari.global.util.SliceConverter.toSlice;
 import static com.team.twodari.point.entity.QPointEntity.pointEntity;
-import static com.team.twodari.tag.entity.QTagEntity.*;
+import static com.team.twodari.tag.entity.QTagEntity.tagEntity;
 
 @RequiredArgsConstructor
 @Repository
@@ -40,7 +36,7 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
                 .limit(PAGE_SIZE + 1)
                 .fetch();
 
-        return toSlice(boardEntities,page);
+        return toSlice(boardEntities, page);
 
     }
 
@@ -57,7 +53,7 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
                 .fetch();
 
 
-        return toSlice(boardEntities,page);
+        return toSlice(boardEntities, page);
 
     }
 
@@ -73,7 +69,7 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
                 .limit(PAGE_SIZE + 1)
                 .fetch();
 
-        return toSlice(boardEntities,page);
+        return toSlice(boardEntities, page);
     }
 
     private JPAQuery<BoardEntityDto> createBaseQuery() {
