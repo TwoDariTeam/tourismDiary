@@ -1,6 +1,7 @@
 package com.team.twodari.common.config.jwt;
 
 import com.team.twodari.common.dto.TokenDTO;
+import com.team.twodari.user.entity.LoginEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -16,14 +17,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider implements InitializingBean {
+
 
     private static final String AUTHORITIES_KEY = "auth";
     //로그확인하기
@@ -55,10 +54,7 @@ public class TokenProvider implements InitializingBean {
 
     //Token 생성 ->알고르즘대로 만든다.
     public TokenDTO createToken(Authentication authentication) {
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
+        String authorities = ExtractAuthorities(authentication);
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
@@ -85,6 +81,23 @@ public class TokenProvider implements InitializingBean {
         return new TokenDTO(access_token, refresh_token);
 
 
+    }
+
+    //권한 추출 부분 분리
+    public String ExtractAuthorities(Authentication authentication) {
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        return authorities;
+    }
+
+    //숫자 loginEntity ->Authentication 변환
+    public Authentication convertAuthentication(LoginEntity loginEntity) {
+        Long userAuthority = loginEntity.getRoleSeq();
+        GrantedAuthority authority = new LongRoleAuthority(userAuthority);
+        Authentication authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginEntity.getEmail(), null, Collections.singletonList(authority));
+        return authenticationToken;
     }
 
     //토큰으로부터 값(사용자 데이터)을 가져오는 메서드.
@@ -143,4 +156,6 @@ public class TokenProvider implements InitializingBean {
         }
         return map;
     }
+
+
 }
