@@ -1,9 +1,6 @@
 package com.team.twodari.point.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "MP_POINT")
@@ -17,7 +14,7 @@ import lombok.*;
 public class PointEntity {
 
     // 포인트 일련번호
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
     private Long pointSeq;
 

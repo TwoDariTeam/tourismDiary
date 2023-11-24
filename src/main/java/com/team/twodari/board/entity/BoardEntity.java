@@ -1,23 +1,20 @@
 package com.team.twodari.board.entity;
 
 import com.team.twodari.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "TB_BOARD")
 @Entity
 @Builder
-@ToString
+@ToString(callSuper = true)
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardEntity extends BaseEntity {
     //시퀀스 네임 찾아서 여기서 주기.
     // 게시판 일련번호
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
     private Long boardSeq;
 

@@ -30,7 +30,7 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
 
         List<BoardEntityDto> boardEntities = createBaseQuery()
                 .where(isContainsWord(word))
-                .orderBy(pointEntity.point.sum().desc())
+                .orderBy(pointEntity.point.sum().desc(),boardEntity.createTime.desc())
                 .offset(page * PAGE_SIZE)
                 .limit(PAGE_SIZE + 1)
                 .fetch();
