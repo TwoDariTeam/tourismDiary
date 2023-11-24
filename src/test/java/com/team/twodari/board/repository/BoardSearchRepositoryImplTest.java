@@ -30,17 +30,17 @@ class BoardSearchRepositoryImplTest {
 
     @BeforeAll
     void setUp() {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 12; i++) {
             BoardEntity boardEntity = boardRepository.save(BoardEntity.builder()
                     .author("author" + i)
                     .title("title" + i)
                     .build());
-            for (int j = 0; j < 3; j++) {
-                pointRepository.save(PointEntity.builder()
-                        .boardSeq(boardEntity.getBoardSeq())
-                        .point(i)
-                        .build());
-            }
+
+            pointRepository.save(PointEntity.builder()
+                    .boardSeq(boardEntity.getBoardSeq())
+                    .point(i)
+                    .build());
+
         }
     }
 
