@@ -58,12 +58,12 @@ class BoardSearchRepositoryImplTest {
     @DisplayName("findContains")
     @Test
     void findContains() {
-        var boardList = boardRepository.findContains(0, "2");
+        var boardList = boardRepository.findContains(0, "1");
 
         var board1 = boardList.getContent().get(0);
 
-        assertThat(boardList).size().isEqualTo(2);
-        assertThat(board1.getTitle()).contains("2");
+        assertThat(boardList).size().isEqualTo(3);
+        assertThat(board1.getTitle()).contains("1");
     }
 
     @DisplayName("findOrderByPoint")
