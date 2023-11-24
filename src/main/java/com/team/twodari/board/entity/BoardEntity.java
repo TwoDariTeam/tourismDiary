@@ -7,15 +7,14 @@ import lombok.*;
 @Table(name = "TB_BOARD")
 @Entity
 @Builder
-@ToString
+@ToString(callSuper = true)
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardEntity extends BaseEntity {
     //시퀀스 네임 찾아서 여기서 주기.
     // 게시판 일련번호
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
     private Long boardSeq;
 
