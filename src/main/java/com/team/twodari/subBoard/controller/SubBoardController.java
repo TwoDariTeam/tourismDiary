@@ -23,9 +23,9 @@ public class SubBoardController {
 
         if (createSubBoardSeq != null) {
             return ResponseEntity.ok("서브보드 작성 성공" + createSubBoardSeq);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서브보드 작성 실패");
         }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서브보드 작성 실패");
     }
 
     @PutMapping("/{subBoardSeq}")
@@ -36,9 +36,9 @@ public class SubBoardController {
 
         if (updatedSubBoardSeq != null) {
             return ResponseEntity.ok("서브보드 수정 성공" + updatedSubBoardSeq);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서브보드 수정 실패");
         }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서브보드 수정 실패");
     }
 
     @DeleteMapping("/{subBoardSeq}")

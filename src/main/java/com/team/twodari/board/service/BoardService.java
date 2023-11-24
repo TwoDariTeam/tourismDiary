@@ -29,6 +29,10 @@ public class BoardService {
         return board.getBoardSeq();
     }
 
+    public BoardEntity getBoardBySeq(Long boardSeq) {
+        return boardRepository.findById(boardSeq).orElse(null);
+    }
+
     public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto) {
         BoardEntity board = boardRepository.findById(boardSeq).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
         board.updateEntity(updateDto.getTitle(), updateDto.getAccessRole());
