@@ -36,7 +36,7 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
                 .limit(PAGE_SIZE + 1)
                 .fetch();
 
-        return toSlice(boardEntities);
+        return toSlice(boardEntities,page);
 
     }
 
@@ -49,7 +49,7 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
                 .fetch();
 
 
-        return toSlice(boardEntities);
+        return toSlice(boardEntities,page);
 
     }
 
@@ -61,7 +61,7 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
                 .limit(PAGE_SIZE + 1)
                 .fetch();
 
-        return toSlice(boardEntities);
+        return toSlice(boardEntities,page);
     }
 
     private JPAQuery<BoardEntityDto> createBaseQuery() {
@@ -92,13 +92,13 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
         return boardEntity.title.contains(word);
     }
 
-    private SliceImpl<BoardEntityDto> toSlice(List<BoardEntityDto> boardEntities) {
+    private SliceImpl<BoardEntityDto> toSlice(List<BoardEntityDto> boardEntities,int currentPage) {
         boolean hasNext = boardEntities.size() > PAGE_SIZE;
 
         if (hasNext) {
             boardEntities.remove(boardEntities.size() - 1);
         }
 
-        return new SliceImpl<>(boardEntities, Pageable.ofSize(PAGE_SIZE).withPage(PAGE_SIZE), hasNext);
+        return new SliceImpl<>(boardEntities, Pageable.ofSize(PAGE_SIZE).withPage(currentPage), hasNext);
     }
 }
