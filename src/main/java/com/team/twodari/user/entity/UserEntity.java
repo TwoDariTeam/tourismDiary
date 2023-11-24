@@ -39,5 +39,7 @@ public class UserEntity extends BaseEntity {
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
 
-
+    public void setDeleted(String flag) {
+        this.deleted = flag;
+    }
 }
