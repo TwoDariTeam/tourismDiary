@@ -2,6 +2,7 @@ package com.team.twodari.admin.user;
 
 import com.team.twodari.admin.exception.BusinessLogicException;
 import com.team.twodari.admin.exception.ExceptionCode;
+import com.team.twodari.common.constant.UserRoleConfig;
 import com.team.twodari.user.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,8 @@ public class AdminUserService {
         validateExistsUser(userSeq);
 
         UserRoleEntity userRoleEntity = adminUserRoleRepository.findById(userSeq)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
-        userRoleEntity.setRoleSeq(1); // 차단
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_ROLE_NOT_FOUND));
+        userRoleEntity.setRoleSeq(UserRoleConfig.UserRole.BLOCK.getLevel()); // 차단
 
         return adminUserRoleRepository.save(userRoleEntity);
     }
