@@ -1,8 +1,11 @@
 package com.team.twodari.base;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team.twodari.admin.user.AdminUserService;
 import com.team.twodari.board.controller.facade.BoardFacadeService;
+import com.team.twodari.board.service.BoardService;
 import com.team.twodari.platform.service.PlatformService;
+import com.team.twodari.subBoard.service.SubBoardService;
 import com.team.twodari.tag.service.TagService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,17 @@ public abstract class BaseControllerTest {
 
     @MockBean
     protected PlatformService platformService;
+
+    @MockBean
+    protected AdminUserService adminUserService;
+
+    @MockBean
+    protected BoardService boardService;
+
+    @MockBean
+    protected SubBoardService subBoardService;
+
+
 
     @BeforeEach
     void mockMvcSetUp(
