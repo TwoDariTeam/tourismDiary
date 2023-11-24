@@ -22,9 +22,9 @@ public class BoardController {
 
         if (createBoardSeq != null) {
             return ResponseEntity.ok("게시글 작성 성공" + createBoardSeq);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 작성 실패");
         }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 작성 실패");
     }
 
     @PutMapping("/{boardSeq}")
@@ -34,9 +34,9 @@ public class BoardController {
 
         if (updateBoardSeq != null) {
             return ResponseEntity.ok("게시글 수정 성공" + updateBoardSeq);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 수정 실패");
         }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 수정 실패");
     }
 
     @DeleteMapping("/{boardSeq}")
