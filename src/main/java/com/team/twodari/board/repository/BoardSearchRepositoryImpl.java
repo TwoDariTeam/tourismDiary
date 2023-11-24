@@ -8,7 +8,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team.twodari.board.dto.BoardEntityDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -16,7 +15,6 @@ import java.util.List;
 
 import static com.team.twodari.board.entity.QBoardEntity.boardEntity;
 import static com.team.twodari.common.constant.Constant.PAGE_SIZE;
-import static com.team.twodari.global.util.SliceConverter.toSlice;
 import static com.team.twodari.point.entity.QPointEntity.pointEntity;
 import static com.team.twodari.tag.entity.QTagEntity.tagEntity;
 
@@ -27,49 +25,34 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<BoardEntityDto> findContains(Integer page, String word) {
+    public List<BoardEntityDto> findContains(Integer page, String word) {
 
-        List<BoardEntityDto> boardEntities = createBaseQuery()
+        return createBaseQuery()
                 .where(isContainsWord(word))
                 .orderBy(orderByTotalPoint(), orderByCreateTime())
                 .offset(page * PAGE_SIZE)
                 .limit(PAGE_SIZE + 1)
                 .fetch();
 
-        return toSlice(boardEntities, page);
-
-    }
-
-    private static OrderSpecifier<Integer> orderByTotalPoint() {
-        return pointEntity.point.sum().desc();
     }
 
     @Override
-    public Slice<BoardEntityDto> findOrderByCreateDate(Integer page) {
-        List<BoardEntityDto> boardEntities = createBaseQuery()
+    public List<BoardEntityDto> findOrderByCreateDate(Integer page) {
+        return createBaseQuery()
                 .orderBy(orderByCreateTime())
                 .offset(page * PAGE_SIZE)
                 .limit(PAGE_SIZE + 1)
                 .fetch();
-
-
-        return toSlice(boardEntities, page);
-
-    }
-
-    private static OrderSpecifier<LocalDateTime> orderByCreateTime() {
-        return boardEntity.createTime.desc();
     }
 
     @Override
-    public Slice<BoardEntityDto> findOrderByPoint(Integer page) {
-        List<BoardEntityDto> boardEntities = createBaseQuery()
+    public List<BoardEntityDto> findOrderByPoint(Integer page) {
+        return createBaseQuery()
                 .orderBy(orderByTotalPoint())
                 .offset(page * PAGE_SIZE)
                 .limit(PAGE_SIZE + 1)
                 .fetch();
 
-        return toSlice(boardEntities, page);
     }
 
     private JPAQuery<BoardEntityDto> createBaseQuery() {
@@ -92,8 +75,16 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
         return boardEntity.boardSeq.eq(pointEntity.boardSeq);
     }
 
-    private static BooleanExpression isEqualToTagBoardSeq() {
+    private BooleanExpression isEqualToTagBoardSeq() {
         return boardEntity.boardSeq.eq(Expressions.numberTemplate(Long.class, "{0}", tagEntity.boardSeq));
+    }
+
+    private OrderSpecifier<Integer> orderByTotalPoint() {
+        return pointEntity.point.sum().desc();
+    }
+
+    private OrderSpecifier<LocalDateTime> orderByCreateTime() {
+        return boardEntity.createTime.desc();
     }
 
     private BooleanExpression isContainsWord(String word) {
