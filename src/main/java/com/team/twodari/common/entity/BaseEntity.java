@@ -26,7 +26,7 @@ public abstract class BaseEntity {
     // 수정 시간
     @LastModifiedDate
     @Column(columnDefinition = "DATETIME")
-    private String updateTime;
+    private LocalDateTime updateTime;
 
     // 생성 이름
     @CreatedBy
