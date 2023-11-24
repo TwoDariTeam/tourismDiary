@@ -8,6 +8,7 @@ import com.team.twodari.tag.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class BoardFacadeService {
     private final BoardMyPageService boardService;
     private final TagService tagService;
 
+    @Transactional(readOnly = true)
     public Slice<BoardOwnResponse> findOwnBoardOrderByCreateDate(String nickname, Integer page){
         List<BoardOwnResponse> ownBoardResponse = boardService.findOwnBoardOrderByCreateDate(nickname, page);
 
@@ -31,6 +33,7 @@ public class BoardFacadeService {
         return SliceConverter.toSlice(ownBoardResponse, page);
     }
 
+    @Transactional(readOnly = true)
     public Slice<BoardMyLikedResponse> findMyLikedBoardOrderByCreateDate(String nickname, Integer page){
         List<BoardMyLikedResponse> myLikedBoardResponse = boardService.findMyLikedBoardOrderByCreateDate(nickname, page);
 
