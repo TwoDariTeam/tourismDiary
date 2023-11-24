@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface SubBoardRepository extends JpaRepository<SubBoardEntity, Long> {
-    List<SubBoardEntity> findByBoard_BoardSeq(Long boardSeq);
+    List<SubBoardEntity> findByBoardBoardSeq(Long boardSeq);
 }
