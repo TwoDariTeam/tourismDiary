@@ -1,7 +1,7 @@
 spring:
   profiles:
     active: dev
-    include: environment, secret
+    include: environment, db
 
 #    oauth2:
 #      client:
