@@ -43,7 +43,7 @@ public class SubBoardService {
     }
 
     public Long updateSubBoard(Long boardSeq, Long subBoardSeq, SubBoardUpdateDto updateDto) {
-        if (boardSeq != null && !boardRepository.existsById(boardSeq)) {
+        if (isExistBoard(boardSeq)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "보드가 존재하지 않습니다");
         }
 
@@ -56,8 +56,12 @@ public class SubBoardService {
         return subBoard.getSubBoardSeq();
     }
 
+    private boolean isExistBoard(Long boardSeq) {
+        return boardSeq != null && !boardRepository.existsById(boardSeq);
+    }
+
     public void deleteSubBoard(Long boardSeq, Long subBoardSeq) {
-        if (boardSeq != null && !boardRepository.existsById(boardSeq)) {
+        if (isExistBoard(boardSeq)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "보드가 존재하지 않습니다");
         }
 
