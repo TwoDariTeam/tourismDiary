@@ -30,7 +30,8 @@ public class BoardService {
     }
 
     public BoardEntity getBoardBySeq(Long boardSeq) {
-        return boardRepository.findById(boardSeq).orElse(null);
+        return boardRepository.findById(boardSeq)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
     }
 
     public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto) {
