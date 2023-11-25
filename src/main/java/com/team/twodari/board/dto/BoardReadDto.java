@@ -3,16 +3,13 @@ package com.team.twodari.board.dto;
 import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.subBoard.entity.SubBoardEntity;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class BoardReadDto {
 
