@@ -1,0 +1,112 @@
+{{>layout/header}}
+<body>
+<div class="sidebar-wrap">
+  <ul>
+    <li class="active"><a href="user_list.html">회원 목록</a></li>
+    <!-- <li><a href="changelog.html">Changelog</a></li> -->
+  </ul>
+</div>
+<div class="header-area">
+  <div class="logo">
+    <img src="/assets/images/logo.png" alt="">
+  </div>
+  <h2>관리자 페이지</h2>
+</div>
+
+<div class="main-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="card-wrap">
+          <div class="introduction-wrap">
+            <h3>회원 목록</h3>
+            <table class="table table-hover">
+              <colgroup>
+                <col style="width:8%; text-align:center"/>
+                <col style="width:52%; text-align:center"/>
+                <col style="width:12%; text-align:center"/>
+                <col style="width:12%; text-align:center"/>
+                <col style="width:16%; text-align:right"/>
+              </colgroup>
+              <thead>
+              <tr class="table-active">
+                <th>User Seq</th>
+                <th>Email</th>
+                <th>Nickname</th>
+                <th>Deleted</th>
+                <th style="text-align:center">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              {{#users}}
+              <tr>
+                <td>{{userSeq}}</td>
+                <td>{{email}}</td>
+                <td>{{nickname}}</td>
+                <td>{{deleted}}</td>
+                <td>
+                  <button class="btnEdit btn btn-active" data-userseq="{{userSeq}}">Edit</button>
+                  <button class="btnDelete btn btn-active" data-userseq="{{userSeq}}">Delete</button>
+                </td>
+              </tr>
+              {{/users}}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jquery latest version -->
+<script src="/assets/js/vendor/jquery-2.2.4.min.js "></script>
+<!-- popper.min.js -->
+<script src="/assets/js/vendor/popper.min.js "></script>
+<!-- bootstrap js -->
+<script src="/assets/js/bootstrap.min.js "></script>
+<!-- main js -->
+<script src="/assets/js/scripts.js "></script>
+</body>
+
+
+<script>
+$(document).ready(function() {
+    $(document).on('click', '.btnEdit', function(event) {
+        event.preventDefault();
+        var userSeq = $(this).data("userseq");
+        console.log( userSeq);
+        $.ajax({
+            url: "/admin/users/update/" + userSeq,
+            type: "POST",
+            success: function(response) {
+                alert("업데이트 성공");
+                window.location.href = "/admin/users";
+            },
+            error: function(xhr, status, error) {
+                alert("업데이트 실패");
+            }
+        });
+    });
+
+    $(document).on('click', '.btnDelete', function(event) {
+        event.preventDefault();
+        var userSeq = $(this).data("userseq");
+        alert(userSeq);
+        console.log( userSeq);
+        $.ajax({
+            url: "/admin/users/delete/" + userSeq,
+            type: "POST",
+            success: function(response) {
+                alert("삭제 성공");
+                window.location.href = "/admin/users";
+            },
+            error: function(xhr, status, error) {
+                alert("삭제 실패");
+            }
+        });
+    });
+});
+</script>
+</html>

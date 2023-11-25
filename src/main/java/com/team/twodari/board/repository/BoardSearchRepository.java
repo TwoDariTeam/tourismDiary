@@ -1,12 +1,14 @@
 package com.team.twodari.board.repository;
 
 import com.team.twodari.board.dto.BoardEntityDto;
-import org.springframework.data.domain.Slice;
+
+import java.util.List;
 
 public interface BoardSearchRepository {
 
-    Slice<BoardEntityDto> findContains(Integer page, String word);
+    List<BoardEntityDto> findContains(Integer page, String word);
 
-    Slice<BoardEntityDto> findOrderByCreateDate(Integer page);
-    Slice<BoardEntityDto> findOrderByPoint(Integer page);
+    List<BoardEntityDto> findOrderByCreateDate(Integer page);
+
+    List<BoardEntityDto> findOrderByPoint(Integer page);
 }
