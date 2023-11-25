@@ -35,7 +35,8 @@ public class BoardService {
     }
 
     public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto) {
-        BoardEntity board = boardRepository.findById(boardSeq).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
+        BoardEntity board = boardRepository.findById(boardSeq)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
         board.updateEntity(updateDto.getTitle(), updateDto.getAccessRole());
         boardRepository.save(board);
 
@@ -43,10 +44,10 @@ public class BoardService {
     }
 
     public void deleteBoard(Long boardSeq) {
-        if (!boardRepository.existsById(boardSeq)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다");
-        }
+        BoardEntity board = boardRepository.findById(boardSeq)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
+        board.deleteEntity();
 
-        boardRepository.deleteById(boardSeq);
+        boardRepository.save(board);
     }
 }
