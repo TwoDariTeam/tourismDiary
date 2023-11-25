@@ -14,20 +14,27 @@ import java.util.Optional;
 public class UserController {
     private UserService userService;
 
-    //로그인 post
+    //로그인 post 완성
     //로그 아웃 post
-    //회원 가입 post
-    //아이디 중복 검사
-    //회원 정보 수정 post
-    //비밀 번호 수정 post
+    //회원 가입 post 완성
+    //아이디 중복 검사 완성
+    //회원 정보 수정 post 완성 - 닉네임 중복검사 완성
+    //비밀 번호 수정 post 완성
     //아이디 찾기 기능 ?? 어떻게 구현??
-    //비밀 번호 찾기 기능
-    //회원 탈퇴 post
+    //비밀 번호 찾기 기능 완성
+    //회원 탈퇴 post 완성
+
+
 
     @PostMapping("/login")
     public ComResponseEntity<Optional<TokenDTO>> login(@RequestBody Login login){
         Optional<TokenDTO> loginToken = userService.login(login);
         return new ComResponseEntity<>(new ComResponseDTO<>("로그인 성공했습니다.",loginToken));
+    }
+    @PostMapping("/logout")
+    public ComResponseEntity<Void> login(){
+        userService.logout();
+        return  new ComResponseEntity<>(new ComResponseDTO<>());
     }
 
     @PostMapping("/create")
@@ -60,4 +67,11 @@ public class UserController {
         String resultMesg = userService.searchPassword(searchPassword);
         return new ComResponseEntity<>(new ComResponseDTO<>(resultMesg));
     }
+
+    @PostMapping("/delete")
+    public ComResponseEntity<Void> deleteUser(@RequestBody DeleteUser deleteUser){
+        userService.deleteUser(deleteUser);
+        return  new ComResponseEntity<>(new ComResponseDTO<>());
+    }
+
 }

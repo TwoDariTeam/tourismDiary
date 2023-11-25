@@ -1,4 +1,14 @@
 spring:
+  spring:
+    jpa:
+      open-in-view: true
+      hibernate:
+        ddl-auto: none
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+        default_batch_fetch_size: 100 # in query 자동
   datasource:
     url: jdbc:h2:mem:test
     username: root

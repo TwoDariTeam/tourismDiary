@@ -55,33 +55,43 @@ public class TokenProvider implements InitializingBean {
     //Token 생성 ->알고르즘대로 만든다.
     public TokenDTO createToken(Authentication authentication) {
         String authorities = ExtractAuthorities(authentication);
+        Date validity = validityPeriod(this.tokenValidityInMilliseconds);
+        Date validity2 = validityPeriod(this.tokenValidityInMilliseconds2);
+        String accessToken = createAccessToken(authentication, authorities,validity);
+        String refreshToken = createRefreshToken(authentication, authorities,validity2);
+        //access_token은 사용자에게 보내고
+        //refresh_token은 디비에 저장하고 나중에 써야 한다
+        //토큰 만들기 전에 트랩 설치해야할듯.
+        return new TokenDTO(accessToken, refreshToken);
+    }
 
+    //시간 지정 함수
+    private Date validityPeriod(Long tokenValidityInMilliseconds) {
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
-        Date validity2 = new Date(now + this.tokenValidityInMilliseconds2);
+        Date validity = new Date(now + tokenValidityInMilliseconds);
+        return validity;
+    }
 
-        String access_token = Jwts.builder()
+    private String createAccessToken(Authentication authentication, String authorities, Date validity) {
+        String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
+        return accessToken;
+    }
 
-        String refresh_token = Jwts.builder()
+    private String createRefreshToken(Authentication authentication, String authorities, Date validity2){
+        String refreshToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity2)
                 .compact();
-
-        //access_token은 사용자에게 보내고
-        //refresh_token은 디비에 저장하고 나중에 써야 한다
-        //토큰 만들기 전에 트랩 설치해야할듯.
-
-        return new TokenDTO(access_token, refresh_token);
-
-
+        return refreshToken;
     }
+
 
     //권한 추출 부분 분리
     public String ExtractAuthorities(Authentication authentication) {

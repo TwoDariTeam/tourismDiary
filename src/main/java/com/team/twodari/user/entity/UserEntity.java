@@ -46,8 +46,17 @@ public class UserEntity extends BaseEntity {
     @Column(name="DELETED", columnDefinition = "CHAR(1)")
     private String deleted = "N";
 
-
+    //비밀번호 변경
     public void updateUserEntity(String password) {
         this.password = password;
+    }
+
+    //회원 유저 소프트 딜리트
+    public void softDelete(){
+        this.deleted = "Y";
+    }
+
+    public  boolean isDeleted(){
+        return "Y".equals(this.deleted);
     }
 }

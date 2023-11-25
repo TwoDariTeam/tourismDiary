@@ -19,4 +19,8 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
    //회원정보 수정할 때 사용
    @Query(value = "SELECT u FROM UserEntity u Where u.eamil =:email")
    Optional<UserEntity> findUserByEmail(String email);
+
+   //닉네임 중복 체크
+   @Query(value = "SELECT u FROM UserEntity u Where u.nickname=:nickname")
+   boolean findByNickname(String nickname);
 }

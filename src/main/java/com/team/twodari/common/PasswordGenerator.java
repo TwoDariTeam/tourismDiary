@@ -12,7 +12,8 @@ import java.util.stream.Stream;
 public class PasswordGenerator {
     private static final SecureRandom random = new SecureRandom();
 
-    public static String generateRandomPassword(int length) {
+
+    public static String generateRandomPassword(Integer length) {
         List<String> passwordChars = new ArrayList<>();
         passwordChars.add(randomChar(PasswordGeneratorConstant.ENG_UPPER_CASE));
         passwordChars.add(randomChar(PasswordGeneratorConstant.ENG_LOWER_CASE));
@@ -29,5 +30,10 @@ public class PasswordGenerator {
 
     private static String randomChar(String characters) {
         return String.valueOf(characters.charAt(random.nextInt(characters.length())));
+    }
+    public static  Integer generatePasswordLength(){
+        Integer randomLength = random.nextInt(PasswordGeneratorConstant.MAX_PASSWORD_LENGTH - PasswordGeneratorConstant.MIN_PASSWORD_LENGTH + 1) + PasswordGeneratorConstant.MIN_PASSWORD_LENGTH;
+        System.out.println(randomLength);
+        return randomLength;
     }
 }

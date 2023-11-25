@@ -1,5 +1,6 @@
 package com.team.twodari.user.service;
 
+import com.team.twodari.common.PasswordGenerator;
 import com.team.twodari.common.config.jwt.TokenProvider;
 import com.team.twodari.common.constant.Constant;
 import com.team.twodari.common.dto.TokenDTO;
@@ -26,9 +27,11 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordGenerator passwordGenerator;
 
     //로그인 메서드
     // Token 반환
+    //시큐리티 컨텍스트에 저장이 안되는듯
     public Optional<TokenDTO> login(Login login) {
         return userRepository.findByEmail(login.getEmail()) //이메일로 이메일, 닉네임, 비밀번호, 권한레벨 반환
                 .map(loginEntity -> {
@@ -49,7 +52,7 @@ public class UserService {
         UserEntity resultUserInfo = createUserInfo(createUser);
         boolean resultUserRole = createUserRole(resultUserInfo.getUserSeq());
         if (resultUserInfo!=null && resultUserRole) {
-            resultMesg = createUser.getNickname() + " 회원 가입 성공하셨습니다.";
+            resultMesg = createUser.getNickname() + Constant.SUCCESS_CREATE_USER_MESG;
             return resultMesg;
         }
         return Constant.FALSE_MESG;
@@ -74,7 +77,7 @@ public class UserService {
         return saveEntity != null;
     }
 
-    //아이디 중복 검사
+    //아이디 중복 검사 - 소프트 딜리트 할 때 보여야 함.
     public String compareId(String email) {
         String resultMesg = Constant.EMAIL_COMPARE_FALSE_MESG;
         boolean resultEmail = userRepository.existByEmail(email);
@@ -87,14 +90,15 @@ public class UserService {
     public String updateUserInfo(UpdateUserInfo updateUserInfo) {
         String resultMesg = Constant.FALSE_MESG;
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(updateUserInfo.getEmail());
-       boolean checkResult = handleUpdateUserInfo(searchUserInfo);
+        boolean compareNickname = userRepository.findByNickname(updateUserInfo.getNickname());
+       boolean checkResult = handleUpdateUserInfo(searchUserInfo,compareNickname);
        if (checkResult)
            resultMesg = Constant.SUCCESS_MESG;
        return resultMesg;
     }
 
-    private boolean handleUpdateUserInfo(Optional<UserEntity> searchUserInfo) {
-        if (searchUserInfo.isPresent()){
+    private boolean handleUpdateUserInfo(Optional<UserEntity> searchUserInfo, boolean compareNickname) {
+        if (searchUserInfo.isPresent()&&compareNickname){
             UserEntity userEntity = searchUserInfo.get();
             userEntity.setNickname(searchUserInfo.get().getNickname());
             userRepository.save(userEntity);
@@ -109,7 +113,9 @@ public class UserService {
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(updatePassword.getEmail());
         String resultMesg = Constant.FALSE_MESG;
         if (passwordEncoder.matches(updatePassword.getPassword(), searchUserInfo.get().getPassword())){
-            searchUserInfo.get().updateUserEntity(handlePassword(updatePassword));
+            UserEntity updateUserInfoByPassword = searchUserInfo.get();
+            updateUserInfoByPassword.updateUserEntity(handlePassword(updatePassword));
+            userRepository.save(updateUserInfoByPassword);
             resultMesg = Constant.SUCCESS_MESG;
 
         }
@@ -129,12 +135,42 @@ public class UserService {
     public String searchPassword(SearchPassword searchPassword) {
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(searchPassword.getEmail());
         String resultMesg = Constant.FALSE_MESG;
-        inputPassword();
+        String newPassword = inputPasswordBySearchPassword();
+        if(searchUserInfo!=null){
+            resultMesg = Constant.SUCCESS_MESG;
+            searchUserInfo.get().updateUserEntity(newPassword);
+        }
         return resultMesg;
     }
 
-    private void inputPassword() {
+    //랜덤 길이의 신규 패스워드 생성
+    private String inputPasswordBySearchPassword() {
+        Integer randomLengthByPassword =passwordGenerator.generatePasswordLength();
+        String newPassword = passwordGenerator.generateRandomPassword(randomLengthByPassword);
+        return newPassword;
     }
 
 
+    //유저 소프트 딜리트
+    public boolean deleteUser(DeleteUser deleteUser) {
+        String userEmail = deleteUser.getEmail();
+        String userPassword = passwordEncoder.encode(deleteUser.getPassword());
+        Optional<UserEntity> userEntity = userRepository.findUserByEmail(userEmail);
+        boolean resultDelete = userInfoSoftDelete(userEntity, userPassword);
+        return resultDelete;
+    }
+
+    //비밀번호 체크후 소프트 딜리트
+    private boolean userInfoSoftDelete(Optional<UserEntity> userEntity, String userPassword) {
+        if (userEntity.isPresent() && passwordEncoder.matches(userPassword, userEntity.get().getPassword())){
+            UserEntity deleteUserInfo = userEntity.get();
+            deleteUserInfo.softDelete();
+            userRepository.save(deleteUserInfo);
+            return true;
+        }
+        throw new IllegalArgumentException(Constant.UNKNOWN_ACCESS);
+    }
+
+    public void logout() {
+    }
 }
