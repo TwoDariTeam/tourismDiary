@@ -14,17 +14,17 @@ import lombok.Getter;
 public class CreateUser {
     @NotBlank
     @Max(40)
-    @Min(18)
+    @Min(1)
     private final String email;
 
     @NotBlank
     @Max(40)
-    @Min(4)
+    @Min(1)
     private final String nickname;
 
     @NotBlank
     @Max(24)
-    @Min(8)
+    @Min(1)
     private final String password;
 
 }

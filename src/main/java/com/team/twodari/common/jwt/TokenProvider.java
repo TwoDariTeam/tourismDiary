@@ -1,7 +1,7 @@
 package com.team.twodari.common.jwt;
 
 import com.team.twodari.common.dto.TokenDTO;
-import com.team.twodari.user.entity.LoginEntity;
+import com.team.twodari.user.entity.LoginEntityImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -102,11 +102,11 @@ public class TokenProvider implements InitializingBean {
     }
 
     //숫자 loginEntity ->Authentication 변환
-    public Authentication convertAuthentication(LoginEntity loginEntity) {
-        Long userAuthority = loginEntity.getRoleSeq();
+    public Authentication convertAuthentication(LoginEntityImpl loginEntityImpl) {
+        Long userAuthority = loginEntityImpl.getRoleSeq();
         GrantedAuthority authority = new LongRoleAuthority(userAuthority);
         Authentication authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginEntity.getEmail(), null, Collections.singletonList(authority));
+                new UsernamePasswordAuthenticationToken(loginEntityImpl.getEmail(), null, Collections.singletonList(authority));
         return authenticationToken;
     }
 

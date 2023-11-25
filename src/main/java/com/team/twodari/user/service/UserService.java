@@ -1,10 +1,11 @@
 package com.team.twodari.user.service;
 
-import com.team.twodari.global.util.PasswordGenerator;
-import com.team.twodari.common.jwt.TokenProvider;
 import com.team.twodari.common.constant.Constant;
 import com.team.twodari.common.dto.TokenDTO;
+import com.team.twodari.common.jwt.TokenProvider;
+import com.team.twodari.global.util.PasswordGenerator;
 import com.team.twodari.user.dto.*;
+import com.team.twodari.user.entity.LoginEntityImpl;
 import com.team.twodari.user.entity.RoleEntity;
 import com.team.twodari.user.entity.UserEntity;
 import com.team.twodari.user.repository.UserRepository;
@@ -29,15 +30,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-
     //로그인 메서드
     // Token 반환
     //시큐리티 컨텍스트에 저장이 안되는듯
     public Optional<TokenDTO> login(Login login) {
+        System.out.println("service Login");
         return userRepository.findByEmail(login.getEmail()) //이메일로 이메일, 닉네임, 비밀번호, 권한레벨 반환
-                .map(loginEntity -> {
-                    if (passwordEncoder.matches(login.getPassword(), loginEntity.getPassword())) {
-                        Authentication authenticationToken = tokenProvider.convertAuthentication(loginEntity);
+                .map(loginEntityImpl -> {
+                    if (passwordEncoder.matches(login.getPassword(), loginEntityImpl.getPassword())) {
+                        Authentication authenticationToken = tokenProvider.convertAuthentication((LoginEntityImpl) loginEntityImpl);
                         TokenDTO tokenDTO = tokenProvider.createToken(authenticationToken);
                         return Optional.of(tokenDTO);
                     } else

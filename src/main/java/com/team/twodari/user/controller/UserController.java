@@ -27,8 +27,6 @@ public class UserController {
     //비밀 번호 찾기 기능 완성
     //회원 탈퇴 post 완성
 
-
-
     @PostMapping("/login")
     public ComResponseEntity<Optional<TokenDTO>> login(@RequestBody Login login){
         System.out.println("login");
