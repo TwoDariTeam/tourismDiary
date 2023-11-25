@@ -7,6 +7,7 @@ import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.board.service.BoardService;
 import com.team.twodari.subBoard.entity.SubBoardEntity;
 import com.team.twodari.subBoard.service.SubBoardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/board")
+@RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
     private final SubBoardService subBoardService;
-
-    public BoardController(BoardService boardService, SubBoardService subBoardService) {
-        this.boardService = boardService;
-        this.subBoardService = subBoardService;
-    }
 
     @PostMapping("/create")
     public ResponseEntity<String> createBoard(@RequestBody BoardCreateDto dto) {
@@ -39,14 +36,12 @@ public class BoardController {
     public ResponseEntity<BoardReadDto> getBoardBySeq(@PathVariable Long boardSeq) {
         BoardEntity board = boardService.getBoardBySeq(boardSeq);
 
-        if (board != null) {
-            List<SubBoardEntity> subBoards = subBoardService.getSubBoardsByBoardSeq(boardSeq);
+        if (board == null) return ResponseEntity.notFound().build();
 
-            BoardReadDto boardReadDto = BoardReadDto.fromEntity(board, subBoards);
-            return ResponseEntity.ok(boardReadDto);
-        }
+        List<SubBoardEntity> subBoards = subBoardService.getSubBoardsByBoardSeq(boardSeq);
 
-        return ResponseEntity.notFound().build();
+        BoardReadDto boardReadDto = BoardReadDto.fromEntity(board, subBoards);
+        return ResponseEntity.ok(boardReadDto);
     }
 
     @PutMapping("/{boardSeq}")
