@@ -29,7 +29,7 @@ public class AdminUserService {
 
         UserRoleEntity userRoleEntity = adminUserRoleRepository.findById(userSeq)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_ROLE_NOT_FOUND));
-        userRoleEntity.setRoleSeq(UserRoleConfig.UserRole.BLOCK.getLevel()); // 차단
+        userRoleEntity.setRoleSeq((UserRoleConfig.UserRole.BLOCK.getLevel().intValue())); // 차단
 
         return adminUserRoleRepository.save(userRoleEntity);
     }

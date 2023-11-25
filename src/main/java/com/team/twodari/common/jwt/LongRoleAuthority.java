@@ -1,4 +1,4 @@
-package com.team.twodari.common.config.jwt;
+package com.team.twodari.common.jwt;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

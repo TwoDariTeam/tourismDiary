@@ -1,11 +1,21 @@
 package com.team.twodari.user.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
-@Setter
 public class SearchPassword {
+    @NotBlank
+    @Max(40)
+    @Min(18)
     private String email;
+
+    @NotBlank
+    @Max(24)
+    @Min(8)
     private String password;
 }

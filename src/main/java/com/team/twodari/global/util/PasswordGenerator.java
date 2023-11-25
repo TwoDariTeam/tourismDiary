@@ -1,4 +1,4 @@
-package com.team.twodari.common;
+package com.team.twodari.global.util;
 
 import com.team.twodari.common.constant.PasswordGeneratorConstant;
 

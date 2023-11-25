@@ -1,7 +1,7 @@
 package com.team.twodari.user.service;
 
-import com.team.twodari.common.PasswordGenerator;
-import com.team.twodari.common.config.jwt.TokenProvider;
+import com.team.twodari.global.util.PasswordGenerator;
+import com.team.twodari.common.jwt.TokenProvider;
 import com.team.twodari.common.constant.Constant;
 import com.team.twodari.common.dto.TokenDTO;
 import com.team.twodari.user.dto.*;
@@ -27,7 +27,8 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private final PasswordGenerator passwordGenerator;
+
+
 
     //로그인 메서드
     // Token 반환
@@ -145,8 +146,8 @@ public class UserService {
 
     //랜덤 길이의 신규 패스워드 생성
     private String inputPasswordBySearchPassword() {
-        Integer randomLengthByPassword =passwordGenerator.generatePasswordLength();
-        String newPassword = passwordGenerator.generateRandomPassword(randomLengthByPassword);
+        int randomLengthByPassword =PasswordGenerator.generatePasswordLength();
+        String newPassword = PasswordGenerator.generateRandomPassword(randomLengthByPassword);
         return newPassword;
     }
 
