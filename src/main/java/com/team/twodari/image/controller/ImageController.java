@@ -17,7 +17,7 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/upload/{subBoardSeq}")
+    @PostMapping("/upload/subBoard/{subBoardSeq}")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file,
                                               @PathVariable Long subBoardSeq) {
         try {
@@ -29,4 +29,12 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 업로드 실패");
         }
     }
+
+    @DeleteMapping("/subBoard/{subBoardSeq}/delete/{imageSeq}")
+    public ResponseEntity<Void> deleteImage(@PathVariable Long subBoardSeq,
+                                            @PathVariable Long imageSeq) {
+        imageService.deleteImage(subBoardSeq, imageSeq);
+        return ResponseEntity.ok().build();
+    }
+
 }
