@@ -35,19 +35,35 @@ public class UserEntity extends BaseEntity {
     private String password;
 
     // 삭제플래그.
-    @NotBlank
-    @Column(columnDefinition = "CHAR(1)")
+    @Column(columnDefinition = "CHAR(1)", insertable = false)
     private String deleted;
 
-    public void setDeleted(String flag) {
-        this.deleted = flag;
+
+    private String createName;
+    public static class UserEntityBuilder {
+        public UserEntity build() {
+            UserEntity userEntity = new UserEntity();
+            userEntity.email = email;
+            userEntity.nickname = nickname;
+            userEntity.password = password;
+            userEntity.createName = email; // createName을 email로 초기화
+            return userEntity;
+        }
     }
 
 
-    public void updateUserEntity(String password) {
+    public void softDelete() {
+        this.deleted = "Y";
+    }
+
+
+    public void updatePassword(String password) {
         this.password = password;
     }
 
-    public void softDelete() {
+    public void updateNickname(String nickname){
+        this.nickname = nickname;
     }
+
+
 }

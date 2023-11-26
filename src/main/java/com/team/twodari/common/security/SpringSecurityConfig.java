@@ -14,10 +14,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @AllArgsConstructor
 public class SpringSecurityConfig {
     //여기서 필터 설정 잡고 JWT 필터로 넘겨서 통합해보자.
+    //여기 설정을 다시 잡고 넘어가자 11-25
     private final JwtFilter jwtFilter;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http
+        http    .csrf(csrf -> csrf.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/**").permitAll() // 모든 경로에 대한 접근을 허용

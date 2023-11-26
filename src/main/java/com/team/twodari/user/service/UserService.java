@@ -53,7 +53,7 @@ public class UserService {
         String resultMesg = Constant.FALSE_MESG;
         UserEntity resultUserInfo = createUserInfo(createUser);
         boolean resultUserRole = createUserRole(resultUserInfo.getUserSeq());
-        if (resultUserInfo!=null && resultUserRole) {
+        if (resultUserInfo != null && resultUserRole) {
             resultMesg = createUser.getNickname() + Constant.SUCCESS_CREATE_USER_MESG;
             return resultMesg;
         }
@@ -65,6 +65,7 @@ public class UserService {
                 .email(createUser.getEmail())
                 .nickname(createUser.getNickname())
                 .password(passwordEncoder.encode(createUser.getPassword()))
+                .createName(createUser.getEmail())
                 .build());
         return savedEntity;
     }
@@ -73,37 +74,39 @@ public class UserService {
     //임시방편
     private boolean createUserRole(Long userSeq) {
         RoleEntity saveEntity = userRoleRepository.save(RoleEntity.builder()
-                        .userSeq(userSeq)
-                        .roleSeq(7L)
-                        .build());
+                .userSeq(userSeq)
+                .roleSeq(7L)
+                .build());
         return saveEntity != null;
     }
 
     //아이디 중복 검사 - 소프트 딜리트 할 때 보여야 함.
     public String compareId(String email) {
         String resultMesg = Constant.EMAIL_COMPARE_FALSE_MESG;
-        boolean resultEmail = userRepository.existByEmail(email);
-        if(resultEmail)
-            resultMesg=Constant.CHECK_EMAIL;
+        UserEntity resultEmail = userRepository.existByEmail(email);
+        boolean nullCheckCompareId = (resultEmail != null)? true: false;
+        if (nullCheckCompareId)
+            resultMesg = Constant.CHECK_EMAIL;
         return resultMesg;
     }
 
     //유저 변경 현재 이메일만 변경 가능 사진은? 어찌 구현?
+    //이구간 compardNickName= false로 나옴.
     public String updateUserInfo(UpdateUserInfo updateUserInfo) {
         String resultMesg = Constant.FALSE_MESG;
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(updateUserInfo.getEmail());
-        boolean compareNickname = userRepository.findByNickname(updateUserInfo.getNickname());
-       boolean checkResult = handleUpdateUserInfo(searchUserInfo,compareNickname);
-       if (checkResult)
-           resultMesg = Constant.SUCCESS_MESG;
-       return resultMesg;
+        UserEntity compareNickname = userRepository.findByNickname(updateUserInfo.getNickname()); // 문제 구간 객체를 반환하는 것 같다. true false값이 필요한데
+        boolean nullCheckNickName = (compareNickname == null)? handleUpdateUserInfo(searchUserInfo, updateUserInfo) : false;
+        if (nullCheckNickName)
+            resultMesg = Constant.SUCCESS_MESG;
+        return resultMesg;
     }
 
-    private boolean handleUpdateUserInfo(Optional<UserEntity> searchUserInfo, boolean compareNickname) {
-        if (searchUserInfo.isPresent()&&compareNickname){
-            UserEntity userEntity = searchUserInfo.get();
-            userEntity.setNickname(searchUserInfo.get().getNickname());
-            userRepository.save(userEntity);
+    private boolean handleUpdateUserInfo(Optional<UserEntity> searchUserInfo, UpdateUserInfo updateUserInfo) {
+        if (searchUserInfo.isPresent()) {
+            UserEntity updateUserInfoByNickname = searchUserInfo.get();
+            updateUserInfoByNickname.updateNickname(updateUserInfo.getNickname());
+            userRepository.save(updateUserInfoByNickname);
             return true;
         }
         return false;
@@ -114,9 +117,9 @@ public class UserService {
     public String updatePassword(UpdatePassword updatePassword) {
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(updatePassword.getEmail());
         String resultMesg = Constant.FALSE_MESG;
-        if (passwordEncoder.matches(updatePassword.getPassword(), searchUserInfo.get().getPassword())){
+        if (passwordEncoder.matches(updatePassword.getPassword(), searchUserInfo.get().getPassword())) {
             UserEntity updateUserInfoByPassword = searchUserInfo.get();
-            updateUserInfoByPassword.updateUserEntity(handlePassword(updatePassword));
+            updateUserInfoByPassword.updatePassword(handlePassword(updatePassword));
             userRepository.save(updateUserInfoByPassword);
             resultMesg = Constant.SUCCESS_MESG;
 
@@ -127,7 +130,7 @@ public class UserService {
     //새로운 비밀번호 암호화.
     private String handlePassword(UpdatePassword updatePassword) {
         String newPassword = passwordEncoder.encode(updatePassword.getNewPassword());
-       return newPassword;
+        return newPassword;
     }
 
     //이메일만 맞다고 비밀번호를 줘?
@@ -138,16 +141,16 @@ public class UserService {
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(searchPassword.getEmail());
         String resultMesg = Constant.FALSE_MESG;
         String newPassword = inputPasswordBySearchPassword();
-        if(searchUserInfo!=null){
+        if (searchUserInfo != null) {
             resultMesg = Constant.SUCCESS_MESG;
-            searchUserInfo.get().updateUserEntity(newPassword);
+            searchUserInfo.get().updatePassword(newPassword);
         }
         return resultMesg;
     }
 
     //랜덤 길이의 신규 패스워드 생성
     private String inputPasswordBySearchPassword() {
-        int randomLengthByPassword =PasswordGenerator.generatePasswordLength();
+        int randomLengthByPassword = PasswordGenerator.generatePasswordLength();
         String newPassword = PasswordGenerator.generateRandomPassword(randomLengthByPassword);
         return newPassword;
     }
@@ -156,7 +159,7 @@ public class UserService {
     //유저 소프트 딜리트
     public boolean deleteUser(DeleteUser deleteUser) {
         String userEmail = deleteUser.getEmail();
-        String userPassword = passwordEncoder.encode(deleteUser.getPassword());
+        String userPassword = deleteUser.getPassword();
         Optional<UserEntity> userEntity = userRepository.findUserByEmail(userEmail);
         boolean resultDelete = userInfoSoftDelete(userEntity, userPassword);
         return resultDelete;
@@ -164,7 +167,7 @@ public class UserService {
 
     //비밀번호 체크후 소프트 딜리트
     private boolean userInfoSoftDelete(Optional<UserEntity> userEntity, String userPassword) {
-        if (userEntity.isPresent() && passwordEncoder.matches(userPassword, userEntity.get().getPassword())){
+        if (userEntity.isPresent() && passwordEncoder.matches(userPassword, userEntity.get().getPassword())) {
             UserEntity deleteUserInfo = userEntity.get();
             deleteUserInfo.softDelete();
             userRepository.save(deleteUserInfo);
@@ -173,6 +176,4 @@ public class UserService {
         throw new IllegalArgumentException(Constant.UNKNOWN_ACCESS);
     }
 
-    public void logout() {
-    }
 }
