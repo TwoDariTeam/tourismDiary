@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface BoardSearchRepository {
 
-    List<BoardEntityDto> findContains(Integer page, String word);
+    List<BoardEntityDto> findContains(Integer offset,Integer size, String word);
 
-    List<BoardEntityDto> findOrderByCreateDate(Integer page);
+    List<BoardEntityDto> findOrderByCreateDate(Long offset,Integer size);
 
-    List<BoardEntityDto> findOrderByPoint(Integer page);
+    List<BoardEntityDto> findOrderByPoint(Long offset,Integer size,Integer condition, String type);
 }

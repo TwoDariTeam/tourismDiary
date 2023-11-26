@@ -43,15 +43,15 @@ class BoardSearchRepositoryImplTest {
     @DisplayName("createDate order by - datetime이라서 아래 코드는 불완전")
     @Test
     void checkCreateDate() {
-        var boardList = boardRepository.findOrderByCreateDate(0);
+        var boardList = boardRepository.findOrderByCreateDate(0L,10);
 
         assertThat(boardList).size().isEqualTo(10);
     }
 
-    @DisplayName("findContains")
+    @DisplayName("board에서 제목에 1이 들어간 board들을 찾아온다")
     @Test
     void findContains() {
-        var boardList = boardRepository.findContains(0, "1");
+        var boardList = boardRepository.findContains(0, 10,"1");
 
         var board1 = boardList.get(0);
 
@@ -59,10 +59,10 @@ class BoardSearchRepositoryImplTest {
         assertThat(board1.getTitle()).contains("1");
     }
 
-    @DisplayName("findOrderByPoint")
+    @DisplayName("totalPoint 순으로 board를 찾아온다.")
     @Test
     void findOrderByPoint() {
-        var boardList = boardRepository.findOrderByPoint(0);
+        var boardList = boardRepository.findOrderByPoint(0L,10,0,"type");
 
         assertThat(boardList.size()).isEqualTo(11);
         assertThat(boardList).isSortedAccordingTo((a, b) ->
