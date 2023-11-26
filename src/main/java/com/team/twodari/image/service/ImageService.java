@@ -37,5 +37,20 @@ public class ImageService {
         return imageUrl;
     }
 
+    public void deleteImage(Long subBoardSeq, Long imageSeq) {
+        if (isExistSubBoard(subBoardSeq)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "서브보드가 존재하지 않습니다");
+        }
+
+        ImageEntity image = imageRepository.findById(imageSeq)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "이미지가 존재하지 않습니다"));
+        image.deleteEntity();
+
+        imageRepository.save(image);
+    }
+
+    private boolean isExistSubBoard(Long subBoardSeq) {
+        return subBoardSeq != null && !subBoardRepository.existsById(subBoardSeq);
+    }
 
 }
