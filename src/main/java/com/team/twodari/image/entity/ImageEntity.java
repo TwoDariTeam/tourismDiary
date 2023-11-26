@@ -30,4 +30,8 @@ public class ImageEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sub_board_seq", nullable = false)
     private SubBoardEntity subBoard;
+
+    public void deleteEntity() {
+        this.deleted = "Y";
+    }
 }
