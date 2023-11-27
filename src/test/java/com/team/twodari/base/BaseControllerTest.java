@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.twodari.admin.user.AdminUserService;
 import com.team.twodari.board.controller.facade.BoardFacadeService;
 import com.team.twodari.board.service.BoardService;
+import com.team.twodari.global.infrastructure.TourApiService;
 import com.team.twodari.image.service.BoardImageService;
 import com.team.twodari.image.service.SubBoardImageService;
 import com.team.twodari.platform.service.PlatformService;
