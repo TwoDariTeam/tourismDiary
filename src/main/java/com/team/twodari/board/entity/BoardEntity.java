@@ -48,8 +48,9 @@ public class BoardEntity extends BaseEntity {
     @OneToMany(mappedBy = "board")
     private List<BoardImageEntity> images = new ArrayList<>();
 
-    public void updateEntity(String title, Integer accessRole) {
+    public void updateEntity(String title, String introduce, Integer accessRole) {
         this.title = title;
+        this.introduce = introduce;
         this.accessRole = accessRole;
     }
 
