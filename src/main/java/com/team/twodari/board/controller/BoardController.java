@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/board")
 @RequiredArgsConstructor
+@RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService;
     private final SubBoardService subBoardService;
