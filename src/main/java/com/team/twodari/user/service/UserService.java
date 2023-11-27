@@ -2,7 +2,7 @@ package com.team.twodari.user.service;
 
 import com.team.twodari.common.constant.Constant;
 import com.team.twodari.common.dto.TokenDTO;
-import com.team.twodari.common.jwt.TokenProvider;
+import com.team.twodari.common.security.jwt.TokenProvider;
 import com.team.twodari.global.util.PasswordGenerator;
 import com.team.twodari.user.dto.*;
 import com.team.twodari.user.entity.LoginEntityImpl;

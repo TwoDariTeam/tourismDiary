@@ -1,4 +1,4 @@
-package com.team.twodari.common.security;
+package com.team.twodari.common.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -36,7 +36,7 @@ public class AdminUserService {
 
     public UserEntity deleteUser(Long userSeq) {
         UserEntity userEntity = validateExistsUser(userSeq);
-        userEntity.setDeleted("Y"); // 탈퇴
+        userEntity.softDelete(); // 탈퇴
 
         return adminUserRepository.save(userEntity);
     }

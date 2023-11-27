@@ -5,15 +5,17 @@ import com.team.twodari.common.dto.ComResponseDTO;
 import com.team.twodari.common.dto.TokenDTO;
 import com.team.twodari.user.dto.*;
 import com.team.twodari.user.service.UserService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/user")
+
 @RequiredArgsConstructor
+@RequestMapping("/user")
+@RestController
 public class UserController {
     private final UserService userService;
 
@@ -45,7 +47,7 @@ public class UserController {
 
     //포스트맨 체크 확인
     @GetMapping("/compareId/{email}")
-    public ComResponseEntity<String> compareId(@NotBlank @PathVariable("email") String email){
+    public ComResponseEntity<String> compareId(@Valid @NotBlank @PathVariable("email") String email){
         String resultMesg = userService.compareId(email);
         return  new ComResponseEntity<>(new ComResponseDTO<>(resultMesg));
     }

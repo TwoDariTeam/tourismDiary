@@ -1,4 +1,4 @@
-package com.team.twodari.common.jwt;
+package com.team.twodari.common.security.jwt;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

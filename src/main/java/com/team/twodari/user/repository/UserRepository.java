@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
    //로그인 시 사용
    @Query(value = "SELECT u.EMAIL, u.NICKNAME, u.PASSWORD, ur.ROLE_SEQ FROM TB_USER u JOIN MP_USER_ROLE ur ON u.USER_SEQ = ur.USER_SEQ WHERE u.EMAIL = :email", nativeQuery = true)
    Optional<LoginEntity> findByEmail(@Param(value = "email")String email);
+   //querydsl
 
    //중복 아이디 체크
    @Query(value = "SELECT u FROM UserEntity u Where u.email =:email")

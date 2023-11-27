@@ -1,4 +1,4 @@
-package com.team.twodari.common.jwt;
+package com.team.twodari.common.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

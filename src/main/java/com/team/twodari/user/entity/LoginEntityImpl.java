@@ -1,6 +1,6 @@
 package com.team.twodari.user.entity;
 
-import com.team.twodari.common.jwt.LongRoleAuthority;
+import com.team.twodari.common.security.jwt.LongRoleAuthority;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

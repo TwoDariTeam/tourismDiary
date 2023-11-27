@@ -7,10 +7,8 @@ import lombok.*;
 
 @Table(name = "TB_USER")
 @Entity
-@Builder
 @ToString
 @Getter
-@Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends BaseEntity {
@@ -40,15 +38,13 @@ public class UserEntity extends BaseEntity {
 
 
     private String createName;
-    public static class UserEntityBuilder {
-        public UserEntity build() {
-            UserEntity userEntity = new UserEntity();
-            userEntity.email = email;
-            userEntity.nickname = nickname;
-            userEntity.password = password;
-            userEntity.createName = email; // createName을 email로 초기화
-            return userEntity;
-        }
+
+    @Builder
+    public UserEntity(String email, String nickname, String password , String createName) {
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.createName = createName;
     }
 
 

@@ -1,4 +1,4 @@
-package com.team.twodari.common.jwt;
+package com.team.twodari.common.security.jwt;
 
 import com.team.twodari.common.dto.TokenDTO;
 import com.team.twodari.user.entity.LoginEntityImpl;

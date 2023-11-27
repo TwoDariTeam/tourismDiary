@@ -6,11 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Null;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
-@Setter
 //레코드 쓰면 17버전 이상
 //All 차이점 requeied차이점 알아보기
 //레코드 불변 객체. (.?)
@@ -33,10 +31,9 @@ public class CreateUser {
     private  String createName;
 
 
-    public void setCreateName(String email) {
+    public void changeName(String email) {
         this.createName = email;
     }
-
 
 
 }
