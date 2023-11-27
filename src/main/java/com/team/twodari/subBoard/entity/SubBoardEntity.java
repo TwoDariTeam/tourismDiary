@@ -34,5 +34,9 @@ public class SubBoardEntity extends BaseEntity {
     public void updateEntity(String contents) {
         this.contents = contents;
     }
+
+    public void deleteEntity() {
+        this.deleted = "Y";
+    }
 }
 

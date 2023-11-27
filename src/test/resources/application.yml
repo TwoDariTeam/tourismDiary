@@ -16,3 +16,16 @@ JWT:
   TOKEN-VALIDITY-IN-SECONDS: 86400
   SECRET2: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
   TOKEN-VALIDITY-IN-SECONDS2: 97400
+
+cloud:
+  aws:
+    s3:
+      bucket: besp1-2team-s3-bucket
+    credentials:
+      access-key: AKIAZ4PB2L4LBPVI6DXO
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false

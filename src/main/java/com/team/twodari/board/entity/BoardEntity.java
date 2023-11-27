@@ -41,4 +41,8 @@ public class BoardEntity extends BaseEntity {
         this.title = title;
         this.accessRole = accessRole;
     }
+
+    public void deleteEntity() {
+        this.deleted = "Y";
+    }
 }

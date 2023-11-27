@@ -1,10 +1,8 @@
 package com.team.twodari.image.entity;
 
 import com.team.twodari.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.team.twodari.subBoard.entity.SubBoardEntity;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "TB_IMAGE")
@@ -17,12 +15,9 @@ import lombok.*;
 public class ImageEntity extends BaseEntity {
     // 이미지 일련번호
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
-    private Integer imageSeq;
-
-    // 보조 게시판 일련번호
-    @Column(columnDefinition = "INT")
-    private Integer subBoardSeq;
+    private Long imageSeq;
 
     // 경로
     @Column(columnDefinition = "VARCHAR(200)")
@@ -31,4 +26,12 @@ public class ImageEntity extends BaseEntity {
     // 삭제플래그
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sub_board_seq", nullable = false)
+    private SubBoardEntity subBoard;
+
+    public void deleteEntity() {
+        this.deleted = "Y";
+    }
 }
