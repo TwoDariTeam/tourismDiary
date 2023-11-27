@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-@Transactional
 public class BoardService {
     private final BoardRepository boardRepository;
 
@@ -29,11 +28,13 @@ public class BoardService {
         return board.getBoardSeq();
     }
 
+    @Transactional(readOnly = true)
     public BoardEntity getBoardBySeq(Long boardSeq) {
         return boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
     }
 
+    @Transactional
     public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto) {
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
@@ -43,6 +44,7 @@ public class BoardService {
         return board.getBoardSeq();
     }
 
+    @Transactional
     public void deleteBoard(Long boardSeq) {
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));

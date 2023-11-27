@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
-@Transactional
 public class SubBoardService {
     private final BoardRepository boardRepository;
     private final SubBoardRepository subBoardRepository;
@@ -38,10 +37,12 @@ public class SubBoardService {
         return subBoard.getSubBoardSeq();
     }
 
+    @Transactional(readOnly = true)
     public List<SubBoardEntity> getSubBoardsByBoardSeq(Long boardSeq) {
         return subBoardRepository.findByBoardBoardSeq(boardSeq);
     }
 
+    @Transactional
     public Long updateSubBoard(Long boardSeq, Long subBoardSeq, SubBoardUpdateDto updateDto) {
         if (isExistBoard(boardSeq)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "보드가 존재하지 않습니다");
@@ -56,6 +57,7 @@ public class SubBoardService {
         return subBoard.getSubBoardSeq();
     }
 
+    @Transactional
     public void deleteSubBoard(Long boardSeq, Long subBoardSeq) {
         if (isExistBoard(boardSeq)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "보드가 존재하지 않습니다");
