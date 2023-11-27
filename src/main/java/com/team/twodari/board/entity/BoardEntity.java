@@ -29,6 +29,10 @@ public class BoardEntity extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(400)")
     private String title;
 
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(30)")
+    private BoardLocation location;
+
     // 접근 권한
     @Column(columnDefinition = "INT")
     private Integer accessRole;

@@ -1,5 +1,6 @@
 package com.team.twodari.board.service;
 
+import static com.team.twodari.board.entity.BoardLocation.*;
 import static com.team.twodari.global.util.SliceConverter.*;
 
 import java.util.List;
@@ -23,15 +24,30 @@ public class BoardSearchService {
 
 	public Slice<BoardEntityDto> findOrderByCreateDate(Pageable pageable) {
 		List<BoardEntityDto> boardList =
-			boardRepository.findOrderByCreateDate(pageable.getOffset(), pageable.getPageSize());
+			boardRepository.findOrderByCreateDate(pageable.getOffset(), pageable.getPageSize(), EMPTY);
 
 		return toSlice(boardList, pageable.getPageNumber());
 	}
 
-	public Slice<BoardEntityDto> findOrderByLike(Pageable pageable, Integer condition, String type) {
+	public Slice<BoardEntityDto> findOrderByPoint(Pageable pageable) {
 		List<BoardEntityDto> boardList =
-			boardRepository.findOrderByPoint(pageable.getOffset(), pageable.getPageSize(), condition, type);
+			boardRepository.findOrderByPoint(pageable.getOffset(), pageable.getPageSize(), EMPTY);
 
 		return toSlice(boardList, pageable.getPageNumber());
 	}
+
+	public Slice<BoardEntityDto> findOrderByCreateDateWithLocation(Pageable pageable, String location) {
+		List<BoardEntityDto> boardList =
+			boardRepository.findOrderByCreateDate(pageable.getOffset(), pageable.getPageSize(), valueOf(location));
+
+		return toSlice(boardList, pageable.getPageNumber());
+	}
+
+	public Slice<BoardEntityDto> findOrderByPointWithLocation(Pageable pageable, String location) {
+		List<BoardEntityDto> boardList =
+			boardRepository.findOrderByPoint(pageable.getOffset(), pageable.getPageSize(), valueOf(location));
+
+		return toSlice(boardList, pageable.getPageNumber());
+	}
+
 }

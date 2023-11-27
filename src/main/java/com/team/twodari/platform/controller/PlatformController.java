@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.team.twodari.board.dto.BoardEntityDto;
 import com.team.twodari.platform.service.PlatformService;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -23,14 +24,27 @@ public class PlatformController {
 		return platformService.getMainPageData(pageable);
 	}
 
-	@GetMapping("/main/boards")
-	public Slice<BoardEntityDto> getMainBoards(
-		@PageableDefault(size = 20) Pageable pageable,
-		@RequestParam(defaultValue = "0") Integer condition,
-		@RequestParam(defaultValue = "seoul") String location
-	) {
+	@GetMapping("/point")
+	public Slice<BoardEntityDto> getMainBoardsByBoard(
+		@PageableDefault(size = 20) Pageable pageable) {
 
-		return platformService.getMainPageDataByCondition(pageable, condition, location);
+		return platformService.getPageOrderByPoint(pageable);
+	}
+
+	@GetMapping("/main/date")
+	public Slice<BoardEntityDto> getMarkerDataOrderByDate(
+		@PageableDefault(size = 20) Pageable pageable,
+		@RequestParam(defaultValue = "seoul") @NotBlank String location) {
+
+		return platformService.getPageOrderByDate(pageable, location);
+	}
+
+	@GetMapping("/main/point")
+	public Slice<BoardEntityDto> getMarkerDataOrderByPoint(
+		@PageableDefault(size = 20) Pageable pageable,
+		@RequestParam(defaultValue = "seoul") @NotBlank String location) {
+
+		return platformService.getPageOrderByPoint(pageable, location);
 	}
 
 }

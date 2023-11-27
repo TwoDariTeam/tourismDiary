@@ -22,9 +22,19 @@ public class PlatformService {
 		return boardSearchService.findOrderByCreateDate(pageable);
 	}
 
-	public Slice<BoardEntityDto> getMainPageDataByCondition(Pageable pageable, Integer condition, String type) {
+	public Slice<BoardEntityDto> getPageOrderByPoint(Pageable pageable) {
 
-		return boardSearchService.findOrderByLike(pageable, condition, type);
+		return boardSearchService.findOrderByPoint(pageable);
+	}
+
+	public Slice<BoardEntityDto> getPageOrderByDate(Pageable pageable , String location) {
+
+		return boardSearchService.findOrderByCreateDateWithLocation(pageable, location);
+	}
+
+	public Slice<BoardEntityDto> getPageOrderByPoint(Pageable pageable , String location) {
+
+		return boardSearchService.findOrderByPointWithLocation(pageable, location);
 	}
 
 }
