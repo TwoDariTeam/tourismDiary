@@ -16,6 +16,9 @@ public class BoardCreateDto {
     @NotBlank
     private String title;
 
+    @NotBlank
+    private String introduce;
+
     @NotNull
     private Integer accessRole;
 }
