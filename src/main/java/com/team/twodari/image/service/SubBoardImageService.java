@@ -1,5 +1,6 @@
 package com.team.twodari.image.service;
 
+import com.team.twodari.common.service.S3UploadService;
 import com.team.twodari.image.entity.SubBoardImageEntity;
 import com.team.twodari.image.repository.SubBoardImageRepository;
 import com.team.twodari.subBoard.entity.SubBoardEntity;
@@ -44,9 +45,8 @@ public class SubBoardImageService {
 
         SubBoardImageEntity image = subBoardImageRepository.findById(imageSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "이미지가 존재하지 않습니다"));
-        image.deleteEntity();
 
-        subBoardImageRepository.save(image);
+        subBoardImageRepository.delete(image);
     }
 
     private boolean isExistSubBoard(Long subBoardSeq) {
