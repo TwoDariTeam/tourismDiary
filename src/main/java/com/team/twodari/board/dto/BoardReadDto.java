@@ -19,11 +19,12 @@ public class BoardReadDto {
     @NotBlank
     private String title;
 
-    // 이미지 나중에 추가
+    @NotBlank
+    private String introduce;
 
     private List<SubBoardEntity> subBoards;
 
     public static BoardReadDto fromEntity(BoardEntity entity, List<SubBoardEntity> subBoards) {
-        return new BoardReadDto(entity.getAuthor(), entity.getTitle(), subBoards);
+        return new BoardReadDto(entity.getAuthor(), entity.getTitle(), entity.getIntroduce(), subBoards);
     }
 }

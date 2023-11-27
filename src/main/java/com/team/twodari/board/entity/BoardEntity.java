@@ -1,8 +1,12 @@
 package com.team.twodari.board.entity;
 
 import com.team.twodari.common.entity.BaseEntity;
+import com.team.twodari.image.entity.BoardImageEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "TB_BOARD")
 @Entity
@@ -29,6 +33,10 @@ public class BoardEntity extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(400)")
     private String title;
 
+    // 소개글
+    @Column(columnDefinition = "TEXT")
+    private String introduce;
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(30)")
     private BoardLocation location;
@@ -41,12 +49,20 @@ public class BoardEntity extends BaseEntity {
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
 
-    public void updateEntity(String title, Integer accessRole) {
+    @OneToMany(mappedBy = "board")
+    private List<BoardImageEntity> images = new ArrayList<>();
+
+    public void updateEntity(String title, String introduce, Integer accessRole) {
         this.title = title;
+        this.introduce = introduce;
         this.accessRole = accessRole;
     }
 
     public void deleteEntity() {
         this.deleted = "Y";
+
+        for (BoardImageEntity image : images) {
+            image.deleteEntity();
+        }
     }
 }
