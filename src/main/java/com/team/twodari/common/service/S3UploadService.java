@@ -1,4 +1,4 @@
-package com.team.twodari.image.service;
+package com.team.twodari.common.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
