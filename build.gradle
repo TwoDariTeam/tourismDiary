@@ -37,8 +37,8 @@ dependencies {
     //쿼리 잘보이는 디펜더시
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
     //H2 임시 데이터베이스
-//    implementation 'com.h2database:h2'
-    //QueryDSL
+    implementation 'com.h2database:h2'
+//    QueryDSL
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
@@ -47,7 +47,7 @@ dependencies {
     //JPA 확장 어노테이션 BaseEntity를 위해서 추가
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     //SC 에러
-//    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.1.5'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.1.5'
     //JWT 필요한 라이브러리
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'

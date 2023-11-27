@@ -20,12 +20,13 @@ public abstract class BaseEntity {
 
     //생성 시간
     @CreatedDate
-    @Column(updatable = false, columnDefinition = "DATETIME", insertable=false)
+    @Column(updatable = false, columnDefinition = "DATETIME")
     private LocalDateTime createTime;
+    // insertable=false
 
     // 수정 시간
     @LastModifiedDate
-    @Column(columnDefinition = "DATETIME", insertable = false)
+    @Column(columnDefinition = "DATETIME")
     private LocalDateTime updateTime;
 
     // 생성 이름
