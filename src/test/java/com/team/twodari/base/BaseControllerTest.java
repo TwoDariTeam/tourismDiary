@@ -53,6 +53,9 @@ public abstract class BaseControllerTest {
     @MockBean
     protected SubBoardImageService subBoardImageService;
 
+    @MockBean
+    protected TourApiService tourApiService;
+
     @BeforeEach
     void mockMvcSetUp(
             final WebApplicationContext context) {
