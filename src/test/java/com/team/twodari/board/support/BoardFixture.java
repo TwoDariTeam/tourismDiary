@@ -4,6 +4,7 @@ import com.team.twodari.board.dto.BoardMyLikedResponse;
 import com.team.twodari.board.dto.BoardOwnResponse;
 import com.team.twodari.board.entity.BoardEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class BoardFixture {
@@ -12,6 +13,7 @@ public class BoardFixture {
     private static final String title = "테스트 게시글 제목";
     private static final Integer accessRole = 1;
     private static final String deleted = null;
+    private static final LocalDateTime writeDate = LocalDateTime.now();
     private static final List<String> tags = List.of("서울여행", "서울", "테스트");
 
     //Board 데이터 생성
@@ -33,7 +35,8 @@ public class BoardFixture {
                 author,
                 title,
                 accessRole,
-                tags
+                tags,
+                writeDate
         );
 
         return boardOwnResponse;
@@ -46,7 +49,8 @@ public class BoardFixture {
                 author,
                 title,
                 accessRole,
-                tags
+                tags,
+                writeDate
         );
 
         return boardMyLikedResponse;

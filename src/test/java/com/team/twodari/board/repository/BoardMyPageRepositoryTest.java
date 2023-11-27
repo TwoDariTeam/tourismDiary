@@ -2,16 +2,20 @@ package com.team.twodari.board.repository;
 
 import com.team.twodari.board.dto.BoardOwnResponse;
 import com.team.twodari.board.entity.BoardEntity;
+import com.team.twodari.config.DataConfig;
+import com.team.twodari.global.config.JpaAuditingConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
-@SpringBootTest
+@Import({DataConfig.class, JpaAuditingConfig.class})
+@DataJpaTest
 class BoardMyPageRepositoryTest {
 
     @Autowired
@@ -49,6 +53,7 @@ class BoardMyPageRepositoryTest {
             Assertions.assertThat(response.size()).isEqualTo(1);
             Assertions.assertThat(response.get(0).getAuthor()).isEqualTo(nickname);
             Assertions.assertThat(response.get(0).getTitle()).isEqualTo(title);
+            Assertions.assertThat(response.get(0).getWriteDate()).isNotNull();
         }
 
 

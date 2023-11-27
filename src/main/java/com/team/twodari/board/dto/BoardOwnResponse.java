@@ -1,8 +1,10 @@
 package com.team.twodari.board.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -14,13 +16,16 @@ public class BoardOwnResponse {
     private String title;
     private Integer totalPoint;
     private List<String> tags;
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
+    private LocalDateTime writeDate;
 
-    public BoardOwnResponse(Long boardSeq, Long categorySeq, String author, String title, Integer totalPoint) {
+    public BoardOwnResponse(Long boardSeq, Long categorySeq, String author, String title, Integer totalPoint, LocalDateTime writeDate) {
         this.boardSeq = boardSeq;
         this.categorySeq = categorySeq;
         this.author = author;
         this.title = title;
         this.totalPoint = totalPoint;
+        this.writeDate = writeDate;
     }
 
     public void connectTags(List<String> tags){

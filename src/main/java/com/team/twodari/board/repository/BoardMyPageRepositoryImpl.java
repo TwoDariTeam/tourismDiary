@@ -31,7 +31,8 @@ public class BoardMyPageRepositoryImpl implements BoardMyPageRepository {
                         boardEntity.categorySeq,
                         boardEntity.author,
                         boardEntity.title,
-                        pointEntity.point.sum()
+                        pointEntity.point.sum(),
+                        boardEntity.createTime
                 ))
                 .from(boardEntity)
                 .leftJoin(pointEntity).on(boardEntity.boardSeq.eq(pointEntity.boardSeq))
@@ -54,7 +55,8 @@ public class BoardMyPageRepositoryImpl implements BoardMyPageRepository {
                         boardEntity.categorySeq,
                         boardEntity.author,
                         boardEntity.title,
-                        pointEntity.point.sum()
+                        pointEntity.point.sum(),
+                        boardEntity.createTime
                 ))
                 .from(pointEntity)
                 .innerJoin(boardEntity).on(pointEntity.boardSeq.eq(boardEntity.boardSeq))
