@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.twodari.admin.user.AdminUserService;
 import com.team.twodari.board.controller.facade.BoardFacadeService;
 import com.team.twodari.board.service.BoardService;
-import com.team.twodari.image.service.ImageService;
+import com.team.twodari.image.service.SubBoardImageService;
 import com.team.twodari.platform.service.PlatformService;
 import com.team.twodari.subBoard.service.SubBoardService;
 import com.team.twodari.tag.service.TagService;
@@ -47,7 +47,7 @@ public abstract class BaseControllerTest {
     protected SubBoardService subBoardService;
 
     @MockBean
-    protected ImageService imageService;
+    protected SubBoardImageService subBoardImageService;
 
     @BeforeEach
     void mockMvcSetUp(

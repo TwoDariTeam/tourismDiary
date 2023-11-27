@@ -5,19 +5,19 @@ import com.team.twodari.subBoard.entity.SubBoardEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "TB_IMAGE")
+@Table(name = "TB_SUB_BOARD_IMAGE")
 @Entity
 @Builder
 @ToString
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ImageEntity extends BaseEntity {
+public class SubBoardImageEntity extends BaseEntity {
     // 이미지 일련번호
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
-    private Long imageSeq;
+    private Long subBoardImageSeq;
 
     // 경로
     @Column(columnDefinition = "VARCHAR(200)")
