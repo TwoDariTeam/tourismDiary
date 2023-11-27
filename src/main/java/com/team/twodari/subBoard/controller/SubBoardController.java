@@ -3,6 +3,7 @@ package com.team.twodari.subBoard.controller;
 import com.team.twodari.subBoard.dto.SubBoardCreateDto;
 import com.team.twodari.subBoard.dto.SubBoardUpdateDto;
 import com.team.twodari.subBoard.service.SubBoardService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class SubBoardController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createSubBoard(@PathVariable("boardSeq") Long boardSeq,
-                                                 @RequestBody SubBoardCreateDto dto) {
+                                                 @RequestBody @Valid SubBoardCreateDto dto) {
         Long createSubBoardSeq = subBoardService.createSubBoard(boardSeq, dto);
 
         if (createSubBoardSeq != null) {
@@ -31,7 +32,7 @@ public class SubBoardController {
     @PutMapping("/{subBoardSeq}")
     public ResponseEntity<String> updateSubBoard(@PathVariable("boardSeq") Long boardSeq,
                                                  @PathVariable("subBoardSeq") Long subBoardSeq,
-                                                 @RequestBody SubBoardUpdateDto dto) {
+                                                 @RequestBody @Valid SubBoardUpdateDto dto) {
         Long updatedSubBoardSeq = subBoardService.updateSubBoard(boardSeq, subBoardSeq, dto);
 
         if (updatedSubBoardSeq != null) {

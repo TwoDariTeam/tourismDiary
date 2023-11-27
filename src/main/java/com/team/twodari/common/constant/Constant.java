@@ -13,7 +13,8 @@ public final class Constant {
     public static final String UNKNOWN_ACCESS = "알 수 없는 접근입니다.";
     public static final String UNKNOWN_VALUE = "알 수 없는 값 입니다.";
     private static final Integer COMPARE_PASSWORD = 1;
-    public static final Integer PAGE_SIZE = 10;
+    public static final Integer PAGE_SIZE = 20;
+
 
     public static final String EMAIL_COMPARE_FALSE_MESG = "해당 이메일이 존재 하지 않습니다.";
 

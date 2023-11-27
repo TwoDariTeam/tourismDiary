@@ -13,6 +13,9 @@ public class BoardUpdateDto {
     @NotBlank
     private String title;
 
+    @NotBlank
+    private String introduce;
+
     @NotNull
     private Integer accessRole;
 }

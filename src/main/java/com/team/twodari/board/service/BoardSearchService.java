@@ -1,31 +1,55 @@
 package com.team.twodari.board.service;
 
-import com.team.twodari.board.dto.BoardEntityDto;
-import com.team.twodari.board.repository.BoardRepository;
-import lombok.RequiredArgsConstructor;
+import static com.team.twodari.board.entity.BoardLocation.*;
+import static com.team.twodari.global.util.SliceConverter.*;
+
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.team.twodari.board.dto.BoardEntityDto;
+import com.team.twodari.board.repository.BoardRepository;
 
-import static com.team.twodari.global.util.SliceConverter.toSlice;
+import lombok.RequiredArgsConstructor;
 
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class BoardSearchService {
 
-    private final BoardRepository boardRepository;
+	private final BoardRepository boardRepository;
 
-    public Slice<BoardEntityDto> findOrderByCreateDate(Integer page) {
-        List<BoardEntityDto> boardList =
-                boardRepository.findOrderByCreateDate(page);
-        return toSlice(boardList, page);
-    }
+	public Slice<BoardEntityDto> findOrderByCreateDate(Pageable pageable) {
+		List<BoardEntityDto> boardList =
+			boardRepository.findOrderByCreateDate(pageable.getOffset(), pageable.getPageSize(), EMPTY);
 
-    public Slice<BoardEntityDto> findOrderByLike(Integer page) {
-        List<BoardEntityDto> boardList = boardRepository.findOrderByPoint(page);
-        return toSlice(boardList, page);
-    }
+		return toSlice(boardList, pageable.getPageNumber());
+	}
+
+	public Slice<BoardEntityDto> findOrderByPoint(Pageable pageable) {
+		List<BoardEntityDto> boardList =
+			boardRepository.findOrderByPoint(pageable.getOffset(), pageable.getPageSize(), EMPTY);
+
+		return toSlice(boardList, pageable.getPageNumber());
+	}
+
+	public Slice<BoardEntityDto> findOrderByCreateDateWithLocation(Pageable pageable, String location) {
+		List<BoardEntityDto> boardList =
+			boardRepository.findOrderByCreateDate(pageable.getOffset(), pageable.getPageSize(), valueOf(location));
+
+		return toSlice(boardList, pageable.getPageNumber());
+	}
+
+	public Slice<BoardEntityDto> findOrderByPointWithLocation(Pageable pageable, String location) {
+
+		List<BoardEntityDto> boardList =
+			boardRepository.findOrderByPoint(pageable.getOffset(), pageable.getPageSize(),
+				getLocation(location));
+
+		return toSlice(boardList, pageable.getPageNumber());
+	}
+
 }

@@ -1,35 +1,32 @@
 package com.team.twodari.image.entity;
 
 import com.team.twodari.common.entity.BaseEntity;
-import com.team.twodari.subBoard.entity.SubBoardEntity;
+import com.team.twodari.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "TB_IMAGE")
+@Table(name = "TB_USER_IMAGE")
 @Entity
 @Builder
 @ToString
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ImageEntity extends BaseEntity {
-    // 이미지 일련번호
+public class UserImageEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
-    private Long imageSeq;
+    private Long userImageSeq;
 
-    // 경로
     @Column(columnDefinition = "VARCHAR(200)")
     private String path;
 
-    // 삭제플래그
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sub_board_seq", nullable = false)
-    private SubBoardEntity subBoard;
+    @JoinColumn(name = "user_seq", nullable = false)
+    private UserEntity user;
 
     public void deleteEntity() {
         this.deleted = "Y";

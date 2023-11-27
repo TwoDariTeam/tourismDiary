@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-@Transactional
 public class BoardService {
     private final BoardRepository boardRepository;
 
@@ -22,6 +21,7 @@ public class BoardService {
         BoardEntity board = BoardEntity.builder()
                 .author(createDto.getAuthor())
                 .title(createDto.getTitle())
+                .introduce(createDto.getIntroduce())
                 .accessRole(createDto.getAccessRole())
                 .build();
         boardRepository.save(board);
@@ -29,20 +29,23 @@ public class BoardService {
         return board.getBoardSeq();
     }
 
+    @Transactional(readOnly = true)
     public BoardEntity getBoardBySeq(Long boardSeq) {
         return boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
     }
 
+    @Transactional
     public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto) {
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
-        board.updateEntity(updateDto.getTitle(), updateDto.getAccessRole());
+        board.updateEntity(updateDto.getTitle(), updateDto.getIntroduce(), updateDto.getAccessRole());
         boardRepository.save(board);
 
         return board.getBoardSeq();
     }
 
+    @Transactional
     public void deleteBoard(Long boardSeq) {
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
