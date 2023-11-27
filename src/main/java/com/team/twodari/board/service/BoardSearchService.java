@@ -15,8 +15,8 @@ import com.team.twodari.board.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class BoardSearchService {
 
@@ -44,8 +44,10 @@ public class BoardSearchService {
 	}
 
 	public Slice<BoardEntityDto> findOrderByPointWithLocation(Pageable pageable, String location) {
+
 		List<BoardEntityDto> boardList =
-			boardRepository.findOrderByPoint(pageable.getOffset(), pageable.getPageSize(), valueOf(location));
+			boardRepository.findOrderByPoint(pageable.getOffset(), pageable.getPageSize(),
+				getLocation(location));
 
 		return toSlice(boardList, pageable.getPageNumber());
 	}

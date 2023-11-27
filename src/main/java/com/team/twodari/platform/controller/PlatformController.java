@@ -42,7 +42,7 @@ public class PlatformController {
 	@GetMapping("/main/point")
 	public Slice<BoardEntityDto> getMarkerDataOrderByPoint(
 		@PageableDefault(size = 20) Pageable pageable,
-		@RequestParam(defaultValue = "seoul") @NotBlank String location) {
+		@RequestParam(defaultValue = "SEOUL") @NotBlank String location) {
 
 		return platformService.getPageOrderByPoint(pageable, location);
 	}

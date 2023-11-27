@@ -129,9 +129,11 @@ class BoardSearchServiceTest {
 
 	private void saveBoardEntity(int size, BoardLocation location) {
 		for (int i = 0; i < size; i++) {
-			BoardEntity boardEntity = boardRepository.save(BoardEntity.builder()
-																	  .location(location)
-																	  .build());
+			BoardEntity boardEntity =
+				boardRepository.save(BoardEntity.builder()
+												.location(location)
+												.build());
+
 			pointRepository.save(PointEntity.builder()
 											.boardSeq(boardEntity.getBoardSeq())
 											.point(i)
