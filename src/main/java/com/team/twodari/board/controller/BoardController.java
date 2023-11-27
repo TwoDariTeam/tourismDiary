@@ -7,6 +7,7 @@ import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.board.service.BoardService;
 import com.team.twodari.subBoard.entity.SubBoardEntity;
 import com.team.twodari.subBoard.service.SubBoardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class BoardController {
     private final SubBoardService subBoardService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createBoard(@RequestBody BoardCreateDto dto) {
+    public ResponseEntity<String> createBoard(@RequestBody @Valid BoardCreateDto dto) {
         Long createBoardSeq = boardService.createBoard(dto);
 
         if (createBoardSeq != null) {
@@ -46,7 +47,7 @@ public class BoardController {
 
     @PutMapping("/{boardSeq}")
     public ResponseEntity<String> updateBoard(@PathVariable("boardSeq") Long boardSeq,
-                                              @RequestBody BoardUpdateDto dto) {
+                                              @RequestBody @Valid BoardUpdateDto dto) {
         Long updateBoardSeq = boardService.updateBoard(boardSeq, dto);
 
         if (updateBoardSeq != null) {
