@@ -3,11 +3,11 @@ package com.team.twodari.board.controller.facade;
 import com.team.twodari.board.dto.BoardMyLikedResponse;
 import com.team.twodari.board.dto.BoardOwnResponse;
 import com.team.twodari.board.service.BoardMyPageService;
-import com.team.twodari.global.util.SliceConverter;
+import com.team.twodari.common.dto.PageResponse;
 import com.team.twodari.tag.service.TagService;
 import com.team.twodari.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,33 +22,33 @@ public class BoardFacadeService {
     private final UserService userService;
 
     @Transactional(readOnly = true)
-    public Slice<BoardOwnResponse> findOwnBoardOrderByCreateDate(String email, Integer page){
+    public PageResponse<List<BoardOwnResponse>> findOwnBoardOrderByCreateDate(String email, Integer page){
 //        UserEntity userEntity = userService.findByEmail(email);
 
-        List<BoardOwnResponse> ownBoardResponse = boardService.findOwnBoardOrderByCreateDate("nickname", page);
+        Page<BoardOwnResponse> ownBoardResponse = boardService.findOwnBoardOrderByCreateDate(email, page);
 
-        for(BoardOwnResponse response : ownBoardResponse){
+        for(BoardOwnResponse response : ownBoardResponse.getContent()){
             List<String> tagNames =
                     tagService.findTagNamesByBoardSeq(response.getBoardSeq());
 
             response.connectTags(tagNames);
         }
 
-        return SliceConverter.toSlice(ownBoardResponse, page);
+        return PageResponse.of(ownBoardResponse.getContent(), ownBoardResponse);
     }
 
     @Transactional(readOnly = true)
-    public Slice<BoardMyLikedResponse> findMyLikedBoardOrderByCreateDate(String email, Integer page){
+    public PageResponse<List<BoardMyLikedResponse>> findMyLikedBoardOrderByCreateDate(String email, Integer page){
 //        UserEntity userEntity = userService.findByEmail(email);
-        List<BoardMyLikedResponse> myLikedBoardResponse = boardService.findMyLikedBoardOrderByCreateDate("nickname", page);
+        Page<BoardMyLikedResponse> myLikedBoardResponse = boardService.findMyLikedBoardOrderByCreateDate(email, page);
 
-        for(BoardMyLikedResponse response : myLikedBoardResponse){
+        for(BoardMyLikedResponse response : myLikedBoardResponse.getContent()){
             List<String> tagNames =
                     tagService.findTagNamesByBoardSeq(response.getBoardSeq());
 
             response.connectTags(tagNames);
         }
 
-        return SliceConverter.toSlice(myLikedBoardResponse, page);
+        return PageResponse.of(myLikedBoardResponse.getContent(), myLikedBoardResponse);
     }
 }

@@ -10,8 +10,9 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.team.twodari.board.dto.BoardEntityDto;
 import com.team.twodari.board.repository.BoardRepository;
+import com.team.twodari.platform.dto.BoardDateDto;
+import com.team.twodari.platform.dto.BoardPointDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,30 +23,30 @@ public class BoardSearchService {
 
 	private final BoardRepository boardRepository;
 
-	public Slice<BoardEntityDto> findOrderByCreateDate(Pageable pageable) {
-		List<BoardEntityDto> boardList =
+	public Slice<BoardDateDto> findOrderByCreateDate(Pageable pageable) {
+		List<BoardDateDto> boardList =
 			boardRepository.findOrderByCreateDate(pageable.getOffset(), pageable.getPageSize(), EMPTY);
 
 		return toSlice(boardList, pageable.getPageNumber());
 	}
 
-	public Slice<BoardEntityDto> findOrderByPoint(Pageable pageable) {
-		List<BoardEntityDto> boardList =
+	public Slice<BoardPointDto> findOrderByPoint(Pageable pageable) {
+		List<BoardPointDto> boardList =
 			boardRepository.findOrderByPoint(pageable.getOffset(), pageable.getPageSize(), EMPTY);
 
 		return toSlice(boardList, pageable.getPageNumber());
 	}
 
-	public Slice<BoardEntityDto> findOrderByCreateDateWithLocation(Pageable pageable, String location) {
-		List<BoardEntityDto> boardList =
+	public Slice<BoardDateDto> findOrderByCreateDateWithLocation(Pageable pageable, String location) {
+		List<BoardDateDto> boardList =
 			boardRepository.findOrderByCreateDate(pageable.getOffset(), pageable.getPageSize(), valueOf(location));
 
 		return toSlice(boardList, pageable.getPageNumber());
 	}
 
-	public Slice<BoardEntityDto> findOrderByPointWithLocation(Pageable pageable, String location) {
+	public Slice<BoardPointDto> findOrderByPointWithLocation(Pageable pageable, String location) {
 
-		List<BoardEntityDto> boardList =
+		List<BoardPointDto> boardList =
 			boardRepository.findOrderByPoint(pageable.getOffset(), pageable.getPageSize(),
 				getLocation(location));
 

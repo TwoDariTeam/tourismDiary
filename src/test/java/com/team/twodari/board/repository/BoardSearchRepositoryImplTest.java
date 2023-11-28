@@ -3,6 +3,8 @@ package com.team.twodari.board.repository;
 import static com.team.twodari.board.entity.BoardLocation.*;
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.Comparator;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.Import;
 
 import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.config.DataConfig;
+import com.team.twodari.platform.dto.BoardDateDto;
 import com.team.twodari.point.entity.PointEntity;
 import com.team.twodari.point.repository.PointRepository;
 
@@ -45,13 +48,15 @@ class BoardSearchRepositoryImplTest {
 		}
 	}
 
-	@Disabled
-	@DisplayName("createDate order by - datetime이라서 아래 코드는 불완전")
+	@Disabled("DateTime을 사용중이므로 해결 방법 필요")
+	@DisplayName("최신 날짜 순으로 가져온다")
 	@Test
 	void checkCreateDate() {
 		var boardList = boardRepository.findOrderByCreateDate(0L, 10, SEOUL);
 
-		assertThat(boardList).size().isEqualTo(10);
+		assertThat(boardList).size().isEqualTo(11);
+		assertThat(boardList).extracting(BoardDateDto::getBoardSeq)
+							 .isSortedAccordingTo(Comparator.reverseOrder());
 	}
 
 	@DisplayName("board에서 제목에 1이 들어간 board들을 찾아온다")
