@@ -49,7 +49,7 @@ public class BoardEntity extends BaseEntity {
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardImageEntity> images = new ArrayList<>();
 
     public void updateEntity(String title, String introduce, Integer accessRole) {
