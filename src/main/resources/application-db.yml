@@ -5,8 +5,3 @@ spring:
     username: ${DATABASE.USERNAME}
     password: ${DATABASE.PASSWORD}
 
-  jpa:
-    hibernate:
-      ddl-auto: create
-      format_sql: true
-    generate-ddl: true

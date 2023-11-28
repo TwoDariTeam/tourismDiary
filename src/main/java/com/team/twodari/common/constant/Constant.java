@@ -16,4 +16,11 @@ public final class Constant {
     public static final Integer PAGE_SIZE = 20;
 
 
+    public static final String EMAIL_COMPARE_FALSE_MESG = "해당 이메일이 존재 하지 않습니다.";
+
+    public static final String CHECK_EMAIL = "해당 이메일이 이미 존재 합니다.";
+    public static final String PASSWORD_COMPARE_FALSE_MESG = "비밀번호가 틀렸습니다.";
+
+    public static final String SUCCESS_CREATE_USER_MESG = " 님 회원 가입에 성공하셨습니다.";
+
 }

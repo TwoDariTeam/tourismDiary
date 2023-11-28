@@ -22,6 +22,7 @@ public abstract class BaseEntity {
     @CreatedDate
     @Column(updatable = false, columnDefinition = "DATETIME")
     private LocalDateTime createTime;
+    // insertable=false
 
     // 수정 시간
     @LastModifiedDate

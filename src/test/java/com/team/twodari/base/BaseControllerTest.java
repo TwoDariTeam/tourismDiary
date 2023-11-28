@@ -4,23 +4,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.twodari.admin.user.AdminUserService;
 import com.team.twodari.board.controller.facade.BoardFacadeService;
 import com.team.twodari.board.service.BoardService;
+import com.team.twodari.common.security.jwt.JwtFilter;
+import com.team.twodari.common.security.jwt.TokenProvider;
 import com.team.twodari.global.infrastructure.TourApiService;
 import com.team.twodari.image.service.BoardImageService;
 import com.team.twodari.image.service.SubBoardImageService;
 import com.team.twodari.platform.service.PlatformService;
 import com.team.twodari.subBoard.service.SubBoardService;
 import com.team.twodari.tag.service.TagService;
-import org.junit.jupiter.api.BeforeEach;
+import com.team.twodari.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
+@Import(FilterChainConfig.class)
 @WebMvcTest
 public abstract class BaseControllerTest {
 
@@ -57,13 +56,26 @@ public abstract class BaseControllerTest {
     @MockBean
     protected TourApiService tourApiService;
 
-    @BeforeEach
-    void mockMvcSetUp(
-            final WebApplicationContext context) {
+    @MockBean
+    protected UserService   userService;
 
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .alwaysDo(print())
-                .addFilter(new CharacterEncodingFilter("UTF-8", true))
-                .build();
-    }
+    @MockBean
+    protected JwtFilter jwtFilter;
+
+    @MockBean
+    protected TokenProvider tokenProvider;
+
+
+
+
+//    @BeforeEach
+//    void mockMvcSetUp(
+//            final WebApplicationContext context) {
+//
+//        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+//                .alwaysDo(print())
+//                .addFilter(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+//                .addFilter(new CharacterEncodingFilter("UTF-8", true))
+//                .build();
+//    }
 }
