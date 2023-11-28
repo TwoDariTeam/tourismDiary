@@ -65,4 +65,6 @@ public class BoardEntity extends BaseEntity {
             image.deleteEntity();
         }
     }
+
+
 }
