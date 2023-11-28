@@ -11,9 +11,6 @@ import lombok.*;
 public class BoardCreateDto {
 
     @NotBlank
-    private String author;
-
-    @NotBlank
     private String title;
 
     @NotBlank
