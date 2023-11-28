@@ -1,10 +1,7 @@
 package com.team.twodari.tag.entity;
 
 import com.team.twodari.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "TB_TAG")
@@ -16,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TagEntity extends BaseEntity {
     // 태그 일련번호
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
     private Integer tagSeq;
 

@@ -2,8 +2,10 @@ package com.team.twodari.board.repository;
 
 import com.team.twodari.board.dto.BoardOwnResponse;
 import com.team.twodari.board.entity.BoardEntity;
+import com.team.twodari.board.support.BoardFixture;
 import com.team.twodari.config.DataConfig;
 import com.team.twodari.global.config.JpaAuditingConfig;
+import com.team.twodari.image.repository.BoardImageRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -20,6 +23,8 @@ class BoardMyPageRepositoryTest {
 
     @Autowired
     protected BoardRepository boardRepository;
+    @Autowired
+    protected BoardImageRepository boardImageRepository;
 
     @Nested
     @DisplayName("BoardMyPageRepository 내부 함수")
@@ -36,7 +41,7 @@ class BoardMyPageRepositoryTest {
             Integer accessRole = 1;
             String deleted = null;
 
-            BoardEntity entity = BoardEntity.builder()
+            BoardEntity board = BoardEntity.builder()
                     .boardSeq(boardSeq)
                     .categorySeq(categorySeq)
                     .author(nickname)
@@ -44,16 +49,17 @@ class BoardMyPageRepositoryTest {
                     .accessRole(accessRole)
                     .deleted(deleted)
                     .build();
-            BoardEntity savedEntity = boardRepository.save(entity);
+
+            BoardEntity savedEntity = boardRepository.save(board);
 
             //when
-            List<BoardOwnResponse> response = boardRepository.findOwnBoardOrderByCreateDate(nickname, 0);
+            Page<BoardOwnResponse> response = boardRepository.findOwnBoardOrderByCreateDate(nickname, 0);
 
             //then
-            Assertions.assertThat(response.size()).isEqualTo(1);
-            Assertions.assertThat(response.get(0).getAuthor()).isEqualTo(nickname);
-            Assertions.assertThat(response.get(0).getTitle()).isEqualTo(title);
-            Assertions.assertThat(response.get(0).getWriteDate()).isNotNull();
+            Assertions.assertThat(response.getContent().size()).isEqualTo(1);
+            Assertions.assertThat(response.getContent().get(0).getAuthor()).isEqualTo(nickname);
+            Assertions.assertThat(response.getContent().get(0).getTitle()).isEqualTo(title);
+            Assertions.assertThat(response.getContent().get(0).getWriteDate()).isNotNull();
         }
 
 
