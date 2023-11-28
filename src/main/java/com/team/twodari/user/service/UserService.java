@@ -95,7 +95,7 @@ public class UserService {
     public String updateUserInfo(UpdateUserInfo updateUserInfo) {
         String resultMesg = Constant.FALSE_MESG;
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(updateUserInfo.getEmail());
-        UserEntity compareNickname = userRepository.findByNickname(updateUserInfo.getNickname()); // 문제 구간 객체를 반환하는 것 같다. true false값이 필요한데
+        Optional<UserEntity> compareNickname = userRepository.findByNickname(updateUserInfo.getNickname()); // 문제 구간 객체를 반환하는 것 같다. true false값이 필요한데
         boolean nullCheckNickName = (compareNickname == null)? handleUpdateUserInfo(searchUserInfo, updateUserInfo) : false;
         if (nullCheckNickName)
             resultMesg = Constant.SUCCESS_MESG;

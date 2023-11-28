@@ -26,6 +26,6 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
    //닉네임 중복 체크
    @Query(value = "SELECT u FROM UserEntity u Where u.nickname=:nickname")
-   UserEntity findByNickname(@Param(value = "nickname")String nickname); //중복이면 true 없으면 false
+   Optional<UserEntity> findByNickname(@Param(value = "nickname")String nickname); //중복이면 true 없으면 false
    //Query사용한 녀석은 항상 객체를 반환한다.
 }
