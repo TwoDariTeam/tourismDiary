@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TwodariApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <envs>
+      <env name="DATABASE.HOST" value="localhost" />
+      <env name="DATABASE.NAME" value="tour" />
+      <env name="DATABASE.PASSWORD" value="1234" />
+      <env name="DATABASE.PORT" value="3307" />
+      <env name="DATABASE.USERNAME" value="tour01" />
+      <env name="JWR&gt;HEADER" value="Authorization" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.team.twodari.TwodariApplication" />
+    <module name="twodari.main" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.team.twodari.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,6 +1,7 @@
-package com.team.twodari.common.config.jwt;
+package com.team.twodari.common.security.jwt;
 
 import com.team.twodari.common.dto.TokenDTO;
+import com.team.twodari.user.entity.LoginEntityImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -16,14 +17,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider implements InitializingBean {
+
 
     private static final String AUTHORITIES_KEY = "auth";
     //로그확인하기
@@ -55,36 +54,60 @@ public class TokenProvider implements InitializingBean {
 
     //Token 생성 ->알고르즘대로 만든다.
     public TokenDTO createToken(Authentication authentication) {
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+        String authorities = ExtractAuthorities(authentication);
+        Date validity = validityPeriod(this.tokenValidityInMilliseconds);
+        Date validity2 = validityPeriod(this.tokenValidityInMilliseconds2);
+        String accessToken = createAccessToken(authentication, authorities,validity);
+        String refreshToken = createRefreshToken(authentication, authorities,validity2);
+        //access_token은 사용자에게 보내고
+        //refresh_token은 디비에 저장하고 나중에 써야 한다
+        //토큰 만들기 전에 트랩 설치해야할듯.
+        return new TokenDTO(accessToken, refreshToken);
+    }
 
-
+    //시간 지정 함수
+    private Date validityPeriod(Long tokenValidityInMilliseconds) {
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
-        Date validity2 = new Date(now + this.tokenValidityInMilliseconds2);
+        Date validity = new Date(now + tokenValidityInMilliseconds);
+        return validity;
+    }
 
-        String access_token = Jwts.builder()
+    private String createAccessToken(Authentication authentication, String authorities, Date validity) {
+        String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
+        return accessToken;
+    }
 
-        String refresh_token = Jwts.builder()
+    private String createRefreshToken(Authentication authentication, String authorities, Date validity2){
+        String refreshToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity2)
                 .compact();
-
-        //access_token은 사용자에게 보내고
-        //refresh_token은 디비에 저장하고 나중에 써야 한다
-        //토큰 만들기 전에 트랩 설치해야할듯.
-
-        return new TokenDTO(access_token, refresh_token);
+        return refreshToken;
+    }
 
 
+    //권한 추출 부분 분리
+    public String ExtractAuthorities(Authentication authentication) {
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        return authorities;
+    }
+
+    //숫자 loginEntity ->Authentication 변환
+    public Authentication convertAuthentication(LoginEntityImpl loginEntityImpl) {
+        Long userAuthority = loginEntityImpl.getRoleSeq();
+        GrantedAuthority authority = new LongRoleAuthority(userAuthority);
+        Authentication authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginEntityImpl.getEmail(), null, Collections.singletonList(authority));
+        return authenticationToken;
     }
 
     //토큰으로부터 값(사용자 데이터)을 가져오는 메서드.
@@ -143,4 +166,6 @@ public class TokenProvider implements InitializingBean {
         }
         return map;
     }
+
+
 }

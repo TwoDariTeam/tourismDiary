@@ -29,14 +29,14 @@ public class AdminUserService {
 
         UserRoleEntity userRoleEntity = adminUserRoleRepository.findById(userSeq)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_ROLE_NOT_FOUND));
-        userRoleEntity.setRoleSeq(UserRoleConfig.UserRole.BLOCK.getLevel()); // 차단
+        userRoleEntity.setRoleSeq((UserRoleConfig.UserRole.BLOCK.getLevel().intValue())); // 차단
 
         return adminUserRoleRepository.save(userRoleEntity);
     }
 
     public UserEntity deleteUser(Long userSeq) {
         UserEntity userEntity = validateExistsUser(userSeq);
-        userEntity.setDeleted("Y"); // 탈퇴
+        userEntity.softDelete(); // 탈퇴
 
         return adminUserRepository.save(userEntity);
     }
