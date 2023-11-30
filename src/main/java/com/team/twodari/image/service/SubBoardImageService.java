@@ -27,7 +27,7 @@ public class SubBoardImageService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "서브보드가 존재하지 않습니다"));
 
         // 이미지를 S3에 업로드하고 S3에 저장된 URL을 반환
-        String imageUrl = s3UploadService.upload(file);
+        String imageUrl = s3UploadService.upload(file, "sub_board_images");
 
         SubBoardImageEntity image = SubBoardImageEntity.builder()
                 .subBoard(subBoard)

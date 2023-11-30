@@ -26,7 +26,7 @@ public class UserImageService {
         UserEntity user = userRepository.findById(userSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다"));
 
-        String imageUrl = s3UploadService.upload(file);
+        String imageUrl = s3UploadService.upload(file, "user_images");
 
         UserImageEntity image = UserImageEntity.builder()
                 .user(user)

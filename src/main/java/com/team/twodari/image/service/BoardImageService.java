@@ -26,7 +26,7 @@ public class BoardImageService {
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "보드가 존재하지 않습니다"));
 
-        String imageUrl = s3UploadService.upload(file);
+        String imageUrl = s3UploadService.upload(file, "board_images");
 
         BoardImageEntity image = BoardImageEntity.builder()
                 .board(board)
