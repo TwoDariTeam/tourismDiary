@@ -22,8 +22,8 @@ cloud:
     s3:
       bucket: besp1-2team-s3-bucket
     credentials:
-      access-key:
-      secret-key:
+      access-key: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
+      secret-key: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
     region:
       static: ap-northeast-2
       auto: false
