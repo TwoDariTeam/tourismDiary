@@ -20,15 +20,15 @@ public class S3UploadService {
         this.amazonS3 = amazonS3;
     }
 
-    public String upload(MultipartFile multipartFile) throws IOException {
+    public String upload(MultipartFile multipartFile, String directoryName) throws IOException {
         String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
         ObjectMetadata objMeta = new ObjectMetadata();
         objMeta.setContentLength(multipartFile.getSize());
 
-        amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
+        amazonS3.putObject(bucket, directoryName + "/" + s3FileName, multipartFile.getInputStream(), objMeta);
 
-        String imageUrl = "https://" + bucket + ".s3.amazonaws.com/" + s3FileName;
+        String imageUrl = "https://" + bucket + ".s3.amazonaws.com/" + directoryName + "/" + s3FileName;
 
         return imageUrl;
     }
