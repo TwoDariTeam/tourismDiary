@@ -22,7 +22,7 @@ public class BoardController {
     @PostMapping("/create")
     public ResponseEntity<String> createBoard(@RequestBody @Valid BoardCreateDto dto,
                                               @AuthenticationPrincipal UserDetails userDetails) {
-        Long createBoardSeq = boardService.createBoard(dto);
+        Long createBoardSeq = boardService.createBoard(dto, userDetails);
 
         if (createBoardSeq != null) {
             return ResponseEntity.ok("게시글 작성 성공" + createBoardSeq);
