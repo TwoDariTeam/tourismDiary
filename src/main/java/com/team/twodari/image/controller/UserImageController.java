@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
@@ -33,7 +34,11 @@ public class UserImageController {
     @DeleteMapping("/user/{userSeq}/delete/{imageSeq}")
     public ResponseEntity<Void> deleteUserImage(@PathVariable Long userSeq,
                                                 @PathVariable Long imageSeq) {
-        userImageService.deleteUserImage(userSeq, imageSeq);
+        if (userSeq == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다");
+        }
+
+        userImageService.deleteUserImage(imageSeq);
         return ResponseEntity.ok().build();
     }
 }
