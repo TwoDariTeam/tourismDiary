@@ -47,16 +47,15 @@ public class BoardService {
     }
 
     public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto, String logInUserNickname) {
-        BoardEntity board = boardRepository.findById(boardSeq)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
-
-        UserEntity boardUser = board.getUser();
-        String boardAuthor = (boardUser != null) ? boardUser.getNickname() : null;
+        String boardAuthor = getBoardAuthor(boardSeq);
 
         // 현재 로그인한 유저와 게시글 작성자가 동일한지 확인
         if (!logInUserNickname.equals(boardAuthor)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 작성자가 아닌 사용자는 수정 할 수 없습니다.");
         }
+
+        BoardEntity board = boardRepository.findById(boardSeq)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
 
         board.updateEntity(updateDto.getTitle(), updateDto.getIntroduce());
 
@@ -64,16 +63,23 @@ public class BoardService {
     }
 
     public void deleteBoard(Long boardSeq, String logInUserNickname) {
-        BoardEntity board = boardRepository.findById(boardSeq)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
-
-        UserEntity boardUser = board.getUser();
-        String boardAuthor = (boardUser != null) ? boardUser.getNickname() : null;
+        String boardAuthor = getBoardAuthor(boardSeq);
 
         if (!logInUserNickname.equals(boardAuthor)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 작성자가 아닌 사용자는 삭제 할 수 없습니다.");
         }
 
+        BoardEntity board = boardRepository.findById(boardSeq)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
+
         board.deleteEntity();
+    }
+
+    private String getBoardAuthor(Long boardSeq) {
+        BoardEntity board = boardRepository.findById(boardSeq)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
+
+        UserEntity boardUser = board.getUser();
+        return (boardUser != null) ? boardUser.getNickname() : null;
     }
 }
