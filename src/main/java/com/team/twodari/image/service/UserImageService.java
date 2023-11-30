@@ -37,18 +37,10 @@ public class UserImageService {
         return imageUrl;
     }
 
-    public void deleteUserImage(Long userSeq, Long imageSeq) {
-        if (isExistUser(userSeq)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다");
-        }
-
+    public void deleteUserImage(Long imageSeq) {
         UserImageEntity image = userImageRepository.findById(imageSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "이미지가 존재하지 않습니다"));
 
         userImageRepository.delete(image);
-    }
-
-    private boolean isExistUser(Long userSeq) {
-        return userSeq != null && !userRepository.existsById(userSeq);
     }
 }
