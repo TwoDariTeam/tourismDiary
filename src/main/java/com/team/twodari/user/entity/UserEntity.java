@@ -1,9 +1,13 @@
 package com.team.twodari.user.entity;
 
+import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "TB_USER")
 @Entity
@@ -16,6 +20,9 @@ public class UserEntity extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
     private Long userSeq;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BoardEntity> boards = new ArrayList<>();
 
     // 이메일
     @NotBlank
@@ -35,7 +42,6 @@ public class UserEntity extends BaseEntity {
     // 삭제플래그.
     @Column(columnDefinition = "CHAR(1)", insertable = false)
     private String deleted;
-
 
     private String createName;
 
