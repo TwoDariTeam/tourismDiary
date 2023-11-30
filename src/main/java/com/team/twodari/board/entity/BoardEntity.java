@@ -55,10 +55,9 @@ public class BoardEntity extends BaseEntity {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardImageEntity> images = new ArrayList<>();
 
-    public void updateEntity(String title, String introduce, Integer accessRole) {
+    public void updateEntity(String title, String introduce) {
         this.title = title;
         this.introduce = introduce;
-        this.accessRole = accessRole;
     }
 
     public void deleteEntity() {
