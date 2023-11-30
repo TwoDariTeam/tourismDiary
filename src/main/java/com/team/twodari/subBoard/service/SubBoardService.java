@@ -6,13 +6,13 @@ import com.team.twodari.subBoard.dto.SubBoardCreateDto;
 import com.team.twodari.subBoard.dto.SubBoardUpdateDto;
 import com.team.twodari.subBoard.entity.SubBoardEntity;
 import com.team.twodari.subBoard.repository.SubBoardRepository;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@Transactional
 public class SubBoardService {
     private final BoardRepository boardRepository;
     private final SubBoardRepository subBoardRepository;
@@ -36,14 +36,12 @@ public class SubBoardService {
         return subBoard.getSubBoardSeq();
     }
 
-    @EntityGraph(attributePaths = "subBoardImages")
     @Transactional(readOnly = true)
     public SubBoardEntity getSubBoard(Long subBoardSeq) {
-        return subBoardRepository.findById(subBoardSeq)
+        return subBoardRepository.findBySubBoardSeqWithImages(subBoardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
     }
 
-    @Transactional
     public Long updateSubBoard(Long boardSeq, Long subBoardSeq, SubBoardUpdateDto updateDto) {
         if (isExistBoard(boardSeq)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "보드가 존재하지 않습니다");
@@ -58,7 +56,6 @@ public class SubBoardService {
         return subBoard.getSubBoardSeq();
     }
 
-    @Transactional
     public void deleteSubBoard(Long boardSeq, Long subBoardSeq) {
         if (isExistBoard(boardSeq)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "보드가 존재하지 않습니다");

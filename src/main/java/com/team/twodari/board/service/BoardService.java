@@ -7,14 +7,15 @@ import com.team.twodari.board.repository.BoardRepository;
 import com.team.twodari.user.entity.LoginEntityImpl;
 import com.team.twodari.user.entity.UserEntity;
 import com.team.twodari.user.repository.UserRepository;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@Transactional
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
@@ -24,11 +25,10 @@ public class BoardService {
         this.userRepository = userRepository;
     }
 
-    public Long createBoard(BoardCreateDto createDto) {
-        // 현재 로그인한 사용자의 정보 가져오기
-        LoginEntityImpl userDetails = (LoginEntityImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        UserEntity user = userRepository.findByNickname(userDetails.getNickname()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public Long createBoard(BoardCreateDto createDto, UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        UserEntity user = userRepository.findByNickname(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         BoardEntity board = BoardEntity.builder()
                 .user(user)
@@ -40,14 +40,12 @@ public class BoardService {
         return board.getBoardSeq();
     }
 
-    @EntityGraph(attributePaths = "boardImages")
     @Transactional(readOnly = true)
     public BoardEntity getBoardBySeq(Long boardSeq) {
-        return boardRepository.findById(boardSeq)
+        return boardRepository.findByBoardSeqWithImages(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
     }
 
-    @Transactional
     public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto, String logInUserNickname) {
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
@@ -65,7 +63,6 @@ public class BoardService {
         return board.getBoardSeq();
     }
 
-    @Transactional
     public void deleteBoard(Long boardSeq, String logInUserNickname) {
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
