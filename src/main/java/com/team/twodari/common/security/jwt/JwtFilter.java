@@ -41,7 +41,7 @@ public class JwtFilter extends GenericFilterBean {
             if (resultMap.get("result").equals("SUCCESS")) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
 //                Authentication authentication = tokenProvider.getCookie(jwt);
-             getCookie();
+             getCookie(httpServletRequest);
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
