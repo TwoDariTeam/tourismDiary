@@ -138,8 +138,8 @@ public class TokenProvider implements InitializingBean {
     //토큰이 맞는지 확인한다
     //기본적으로는 true false만 보내지만
     //자세한 정보를 보내지 커스텀이 필요한 곳
-    public HashMap<String, String> validateToken(String token) {
-        HashMap<String, String> map = new HashMap<String, String>();
+    public Map<String, String> validateToken(String token) {
+        Map<String, String> map = new HashMap<String, String>();
 
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
