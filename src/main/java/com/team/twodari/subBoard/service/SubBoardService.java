@@ -6,12 +6,11 @@ import com.team.twodari.subBoard.dto.SubBoardCreateDto;
 import com.team.twodari.subBoard.dto.SubBoardUpdateDto;
 import com.team.twodari.subBoard.entity.SubBoardEntity;
 import com.team.twodari.subBoard.repository.SubBoardRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 public class SubBoardService {
@@ -37,9 +36,11 @@ public class SubBoardService {
         return subBoard.getSubBoardSeq();
     }
 
+    @EntityGraph(attributePaths = "subBoardImages")
     @Transactional(readOnly = true)
-    public List<SubBoardEntity> getSubBoardsByBoardSeq(Long boardSeq) {
-        return subBoardRepository.findByBoardBoardSeq(boardSeq);
+    public SubBoardEntity getSubBoard(Long subBoardSeq) {
+        return subBoardRepository.findById(subBoardSeq)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
     }
 
     @Transactional
