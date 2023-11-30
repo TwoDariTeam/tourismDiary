@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name = "TB_BOARD")
 @Entity
 @Builder
-@ToString(callSuper = true)
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,7 +27,7 @@ public class BoardEntity extends BaseEntity {
     private Long categorySeq;
 
     // 작성자
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_seq")
     private UserEntity user;
 
