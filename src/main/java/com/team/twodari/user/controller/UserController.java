@@ -16,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
 
@@ -33,7 +34,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ComResponseEntity<Optional<TokenDTO>> login(@RequestBody Login login){
-        System.out.println("login");
         Optional<TokenDTO> loginToken = userService.login(login);
         return new ComResponseEntity<>(new ComResponseDTO<>("로그인 성공했습니다.",loginToken));
     }
