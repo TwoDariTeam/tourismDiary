@@ -43,6 +43,7 @@ public class UserEntity extends BaseEntity {
     @Column(columnDefinition = "CHAR(1)", insertable = false)
     private String deleted;
 
+
     private String createName;
 
     @Builder

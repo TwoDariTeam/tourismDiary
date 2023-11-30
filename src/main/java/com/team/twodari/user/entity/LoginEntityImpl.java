@@ -1,20 +1,18 @@
 package com.team.twodari.user.entity;
 
 import com.team.twodari.common.security.jwt.LongRoleAuthority;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
+@ToString
 @Getter
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class LoginEntityImpl implements UserDetails, LoginEntity {
+public class LoginEntityImpl implements  LoginEntity , UserDetails{
     private String email;
     private String nickname;
     private String password;
