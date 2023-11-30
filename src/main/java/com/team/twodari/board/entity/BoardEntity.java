@@ -51,6 +51,7 @@ public class BoardEntity extends BaseEntity {
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
 
+    @Builder.Default
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardImageEntity> images = new ArrayList<>();
 
@@ -66,4 +67,6 @@ public class BoardEntity extends BaseEntity {
             image.deleteEntity();
         }
     }
+
+
 }
