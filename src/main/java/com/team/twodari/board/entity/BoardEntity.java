@@ -2,6 +2,7 @@ package com.team.twodari.board.entity;
 
 import com.team.twodari.common.entity.BaseEntity;
 import com.team.twodari.image.entity.BoardImageEntity;
+import com.team.twodari.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,9 +26,11 @@ public class BoardEntity extends BaseEntity {
     // 카테고리 일련번호
     @Column(columnDefinition = "INT")
     private Long categorySeq;
+
     // 작성자
-    @Column(columnDefinition = "VARCHAR(40)")
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "user_seq")
+    private UserEntity user;
 
     // 제목
     @Column(columnDefinition = "VARCHAR(400)")
