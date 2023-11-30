@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "TB_BOARD")
 @Entity
 @Builder
-@ToString(callSuper = true)
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -49,6 +48,7 @@ public class BoardEntity extends BaseEntity {
     @Column(columnDefinition = "CHAR(1)")
     private String deleted;
 
+    @Builder.Default
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardImageEntity> images = new ArrayList<>();
 
@@ -65,4 +65,6 @@ public class BoardEntity extends BaseEntity {
             image.deleteEntity();
         }
     }
+
+
 }

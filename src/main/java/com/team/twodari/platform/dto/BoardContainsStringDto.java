@@ -10,7 +10,6 @@ import lombok.ToString;
 
 @ToString
 @Getter
-@AllArgsConstructor
 public class BoardContainsStringDto {
 
 	private Long boardSeq;
@@ -23,4 +22,18 @@ public class BoardContainsStringDto {
 	private LocalDateTime createTime;
 	private BoardLocation location;
 
+	public BoardContainsStringDto(Long boardSeq, Long categorySeq, String author, String title, Integer totalPoint, String content, LocalDateTime createTime, BoardLocation location) {
+		this.boardSeq = boardSeq;
+		this.categorySeq = categorySeq;
+		this.author = author;
+		this.title = title;
+		this.totalPoint = totalPoint;
+		this.content = content;
+		this.createTime = createTime;
+		this.location = location;
+	}
+
+	public void insertImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 }

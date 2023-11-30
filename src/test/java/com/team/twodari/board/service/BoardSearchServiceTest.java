@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.board.entity.BoardLocation;
 import com.team.twodari.board.repository.BoardRepository;
+import com.team.twodari.image.entity.BoardImageEntity;
+import com.team.twodari.image.repository.BoardImageRepository;
 import com.team.twodari.platform.dto.BoardDateDto;
 import com.team.twodari.platform.dto.BoardPointDto;
 import com.team.twodari.point.entity.PointEntity;
@@ -35,6 +37,9 @@ class BoardSearchServiceTest {
 
 	@Autowired
 	private BoardSearchService boardSearchService;
+
+	@Autowired
+	private BoardImageRepository imageRepository;
 
 	@Nested
 	@DisplayName("날짜 순으로 요청")
@@ -142,6 +147,12 @@ class BoardSearchServiceTest {
 											.boardSeq(boardEntity.getBoardSeq())
 											.point(i)
 											.build());
+			for (int j = 0; j < 3; j++) {
+				imageRepository.save(BoardImageEntity.builder()
+								   .path("path"+i+j)
+													 .board(boardEntity)
+													 .build());
+			}
 		}
 
 	}

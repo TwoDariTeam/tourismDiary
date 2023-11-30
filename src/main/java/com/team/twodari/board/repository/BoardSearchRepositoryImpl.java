@@ -41,14 +41,12 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
 					boardEntity.title,
 					pointEntity.point.sum(),
 					boardEntity.introduce,
-					boardImageEntity.path,
 					boardEntity.createTime,
 					boardEntity.location)
 			)
 			.from(boardEntity)
 			.leftJoin(pointEntity).on(isEqualToPointBoardSeq())
 			.leftJoin(tagEntity).on(isEqualToTagBoardSeq())
-			.leftJoin(boardImageEntity).on(isEqualToImageBoardSeq()).fetchJoin()
 			.groupBy(boardEntity.boardSeq)
 			.where(isContainsWord(word), isEqualLocation(location))
 			.orderBy(orderByTotalPoint(), orderByCreateTime())
@@ -69,7 +67,6 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
 					boardEntity.title,
 					pointEntity.point.sum(),
 					boardEntity.introduce,
-					boardImageEntity.path,
 					boardEntity.createTime,
 					boardEntity.location
 				)
@@ -77,7 +74,6 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
 			.from(boardEntity)
 			.leftJoin(pointEntity).on(isEqualToPointBoardSeq())
 			.leftJoin(tagEntity).on(isEqualToTagBoardSeq())
-			.leftJoin(boardImageEntity).on(isEqualToImageBoardSeq()).fetchJoin()
 			.groupBy(boardEntity.boardSeq)
 			.where(isEqualLocation(location))
 			.orderBy(orderByCreateTime())
@@ -100,14 +96,12 @@ public class BoardSearchRepositoryImpl implements BoardSearchRepository {
 					boardEntity.title,
 					pointEntity.point.sum(),
 					boardEntity.introduce,
-					boardImageEntity.path,
 					boardEntity.createTime,
 					boardEntity.location)
 			)
 			.from(boardEntity)
 			.leftJoin(pointEntity).on(isEqualToPointBoardSeq())
 			.leftJoin(tagEntity).on(isEqualToTagBoardSeq())
-			.leftJoin(boardImageEntity).on(isEqualToImageBoardSeq()).fetchJoin()
 			.groupBy(boardEntity.boardSeq)
 			.where(isEqualLocation(location))
 			.orderBy(orderByTotalPoint())
