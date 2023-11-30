@@ -11,7 +11,6 @@ import java.util.List;
 
 @Table(name = "TB_USER")
 @Entity
-@ToString
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,6 +20,7 @@ public class UserEntity extends BaseEntity {
     @Column(columnDefinition = "INT")
     private Long userSeq;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoardEntity> boards = new ArrayList<>();
 
