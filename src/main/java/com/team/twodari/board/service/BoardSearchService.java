@@ -88,6 +88,7 @@ public class BoardSearchService {
 		return toSlice(boardList, pageable.getPageNumber());
 	}
 
+	//TODO 쿼리 수정
 	private Map<Long, String> findAndInsertImagePath(List<Long> boardSeq) {
 		return boardImageRepository.findFirstByBoardSeqs(boardSeq)
 			.stream().collect(Collectors.toMap(
