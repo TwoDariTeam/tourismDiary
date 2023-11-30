@@ -5,9 +5,6 @@ import com.team.twodari.board.dto.BoardReadDto;
 import com.team.twodari.board.dto.BoardUpdateDto;
 import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.board.service.BoardService;
-import com.team.twodari.image.service.BoardImageService;
-import com.team.twodari.subBoard.entity.SubBoardEntity;
-import com.team.twodari.subBoard.service.SubBoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,14 +13,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService;
-    private final SubBoardService subBoardService;
 
     @PostMapping("/create")
     public ResponseEntity<String> createBoard(@RequestBody @Valid BoardCreateDto dto,
@@ -43,9 +37,7 @@ public class BoardController {
 
         if (board == null) return ResponseEntity.notFound().build();
 
-        List<SubBoardEntity> subBoards = subBoardService.getSubBoardsByBoardSeq(boardSeq);
-
-        BoardReadDto boardReadDto = BoardReadDto.fromEntity(board, subBoards);
+        BoardReadDto boardReadDto = BoardReadDto.fromEntity(board);
         return ResponseEntity.ok(boardReadDto);
     }
 

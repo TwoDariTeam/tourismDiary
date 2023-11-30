@@ -7,6 +7,7 @@ import com.team.twodari.board.repository.BoardRepository;
 import com.team.twodari.user.entity.LoginEntityImpl;
 import com.team.twodari.user.entity.UserEntity;
 import com.team.twodari.user.repository.UserRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class BoardService {
         return board.getBoardSeq();
     }
 
+    @EntityGraph(attributePaths = "boardImages")
     @Transactional(readOnly = true)
     public BoardEntity getBoardBySeq(Long boardSeq) {
         return boardRepository.findById(boardSeq)
@@ -58,7 +60,7 @@ public class BoardService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 작성자가 아닌 사용자는 수정 할 수 없습니다.");
         }
 
-        board.updateEntity(updateDto.getTitle(), updateDto.getIntroduce(), updateDto.getAccessRole());
+        board.updateEntity(updateDto.getTitle(), updateDto.getIntroduce());
 
         return board.getBoardSeq();
     }
