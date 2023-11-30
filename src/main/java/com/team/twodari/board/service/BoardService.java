@@ -29,12 +29,10 @@ public class BoardService {
 
         UserEntity user = userRepository.findByNickname(userDetails.getNickname()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        // TODO: author -> userSeq 로 변경 후 수정
         BoardEntity board = BoardEntity.builder()
-                .author(user.getNickname())
+                .user(user)
                 .title(createDto.getTitle())
                 .introduce(createDto.getIntroduce())
-                .accessRole(createDto.getAccessRole())
                 .build();
         boardRepository.save(board);
 
@@ -48,16 +46,12 @@ public class BoardService {
     }
 
     @Transactional
-    public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto) {
-        LoginEntityImpl userDetails = (LoginEntityImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        // 현재 로그인한 유저의 닉네임
-        String logInUserNickname = userDetails.getNickname();
-
+    public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto, String logInUserNickname) {
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
 
-        String boardAuthor = board.getAuthor();
+        UserEntity boardUser = board.getUser();
+        String boardAuthor = (boardUser != null) ? boardUser.getNickname() : null;
 
         // 현재 로그인한 유저와 게시글 작성자가 동일한지 확인
         if (!logInUserNickname.equals(boardAuthor)) {
@@ -65,28 +59,22 @@ public class BoardService {
         }
 
         board.updateEntity(updateDto.getTitle(), updateDto.getIntroduce(), updateDto.getAccessRole());
-        boardRepository.save(board);
 
         return board.getBoardSeq();
     }
 
     @Transactional
-    public void deleteBoard(Long boardSeq) {
-        LoginEntityImpl userDetails = (LoginEntityImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        String logInUserNickname = userDetails.getNickname();
-
+    public void deleteBoard(Long boardSeq, String logInUserNickname) {
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
 
-        String boardAuthor = board.getAuthor();
+        UserEntity boardUser = board.getUser();
+        String boardAuthor = (boardUser != null) ? boardUser.getNickname() : null;
 
         if (!logInUserNickname.equals(boardAuthor)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 작성자가 아닌 사용자는 삭제 할 수 없습니다.");
         }
 
         board.deleteEntity();
-
-        boardRepository.save(board);
     }
 }
