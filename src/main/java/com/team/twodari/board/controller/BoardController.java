@@ -5,12 +5,15 @@ import com.team.twodari.board.dto.BoardReadDto;
 import com.team.twodari.board.dto.BoardUpdateDto;
 import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.board.service.BoardService;
+import com.team.twodari.image.service.BoardImageService;
 import com.team.twodari.subBoard.entity.SubBoardEntity;
 import com.team.twodari.subBoard.service.SubBoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +26,8 @@ public class BoardController {
     private final SubBoardService subBoardService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createBoard(@RequestBody @Valid BoardCreateDto dto) {
+    public ResponseEntity<String> createBoard(@RequestBody @Valid BoardCreateDto dto,
+                                              @AuthenticationPrincipal UserDetails userDetails) {
         Long createBoardSeq = boardService.createBoard(dto);
 
         if (createBoardSeq != null) {
@@ -47,8 +51,12 @@ public class BoardController {
 
     @PutMapping("/{boardSeq}")
     public ResponseEntity<String> updateBoard(@PathVariable("boardSeq") Long boardSeq,
-                                              @RequestBody @Valid BoardUpdateDto dto) {
-        Long updateBoardSeq = boardService.updateBoard(boardSeq, dto);
+                                              @RequestBody @Valid BoardUpdateDto dto,
+                                              @AuthenticationPrincipal UserDetails userDetails) {
+        // 현재 로그인한 유저의 닉네임
+        String logInUserNickname = userDetails.getUsername();
+
+        Long updateBoardSeq = boardService.updateBoard(boardSeq, dto, logInUserNickname);
 
         if (updateBoardSeq != null) {
             return ResponseEntity.ok("게시글 수정 성공" + updateBoardSeq);
@@ -58,8 +66,12 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardSeq}")
-    public ResponseEntity<String> deleteBoard(@PathVariable("boardSeq") Long boardSeq) {
-        boardService.deleteBoard(boardSeq);
+    public ResponseEntity<String> deleteBoard(@PathVariable("boardSeq") Long boardSeq,
+                                              @AuthenticationPrincipal UserDetails userDetails) {
+
+        String logInUserNickname = userDetails.getUsername();
+
+        boardService.deleteBoard(boardSeq, logInUserNickname);
 
         return ResponseEntity.ok("게시글 삭제 성공");
     }
