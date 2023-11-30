@@ -25,6 +25,6 @@ public class BoardReadDto {
     private List<SubBoardEntity> subBoards;
 
     public static BoardReadDto fromEntity(BoardEntity entity, List<SubBoardEntity> subBoards) {
-        return new BoardReadDto(entity.getAuthor(), entity.getTitle(), entity.getIntroduce(), subBoards);
+        return new BoardReadDto(entity.getUser().getNickname(), entity.getTitle(), entity.getIntroduce(), subBoards);
     }
 }
