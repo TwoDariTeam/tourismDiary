@@ -5,7 +5,6 @@ import com.team.twodari.common.dto.TokenDTO;
 import com.team.twodari.common.security.jwt.TokenProvider;
 import com.team.twodari.global.util.PasswordGenerator;
 import com.team.twodari.user.dto.*;
-import com.team.twodari.user.entity.LoginEntityImpl;
 import com.team.twodari.user.entity.RoleEntity;
 import com.team.twodari.user.entity.UserEntity;
 import com.team.twodari.user.repository.UserRepository;
@@ -13,7 +12,6 @@ import com.team.twodari.user.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,19 +32,20 @@ public class UserService {
     // Token 반환
     //시큐리티 컨텍스트에 저장이 안되는듯
     public Optional<TokenDTO> login(Login login) {
-        System.out.println("service Login");
-        return userRepository.findByEmail(login.getEmail()) //이메일로 이메일, 닉네임, 비밀번호, 권한레벨 반환
-                .map(loginEntityImpl -> {
-                    if (passwordEncoder.matches(login.getPassword(), loginEntityImpl.getPassword())) {
-                        Authentication authenticationToken = tokenProvider.convertAuthentication((LoginEntityImpl) loginEntityImpl);
-                        TokenDTO tokenDTO = tokenProvider.createToken(authenticationToken);
-                        return Optional.of(tokenDTO);
-                    } else
-                        throw new BadCredentialsException(Constant.PASSWORD_COMPARE_FALSE_MESG);
+        UserEntity userEntity = userRepository.findByEmail(login.getEmail()).orElseThrow(); //이메일로 이메일, 닉네임, 비밀번호, 권한레벨 반환
+        RoleEntity roleEntity = userRoleRepository.findByUserSeq(userEntity.getUserSeq()).orElseThrow();
+        if (passwordEncoder.matches(login.getPassword(), userEntity.getPassword())) {
+            Authentication authenticationToken = tokenProvider.convertAuthentication(roleEntity, userEntity);
+            TokenDTO tokenDTO = tokenProvider.createToken(authenticationToken);
+            System.out.println("result login"+tokenDTO);
+            return Optional.of(tokenDTO);
+        } else {
+            throw new BadCredentialsException(Constant.PASSWORD_COMPARE_FALSE_MESG);
+        }
 
-                })
-                .orElseThrow(() -> new UsernameNotFoundException(Constant.EMAIL_COMPARE_FALSE_MESG));
     }
+
+
 
 
     public String createUser(CreateUser createUser) {
@@ -82,11 +81,11 @@ public class UserService {
 
     //아이디 중복 검사 - 소프트 딜리트 할 때 보여야 함.
     public String compareId(String email) {
-        String resultMesg = Constant.EMAIL_COMPARE_FALSE_MESG;
+        String resultMesg = Constant.FALSE_RESULT;
         UserEntity resultEmail = userRepository.existByEmail(email);
-        boolean nullCheckCompareId = (resultEmail != null)? true: false;
+        boolean nullCheckCompareId = (resultEmail == null) ? true : false;
         if (nullCheckCompareId)
-            resultMesg = Constant.CHECK_EMAIL;
+            resultMesg = Constant.SUCCESS_RESULT;
         return resultMesg;
     }
 
@@ -96,7 +95,7 @@ public class UserService {
         String resultMesg = Constant.FALSE_MESG;
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(updateUserInfo.getEmail());
         UserEntity compareNickname = userRepository.findByNickname(updateUserInfo.getNickname()); // 문제 구간 객체를 반환하는 것 같다. true false값이 필요한데
-        boolean nullCheckNickName = (compareNickname == null)? handleUpdateUserInfo(searchUserInfo, updateUserInfo) : false;
+        boolean nullCheckNickName = (compareNickname == null) ? handleUpdateUserInfo(searchUserInfo, updateUserInfo) : false;
         if (nullCheckNickName)
             resultMesg = Constant.SUCCESS_MESG;
         return resultMesg;

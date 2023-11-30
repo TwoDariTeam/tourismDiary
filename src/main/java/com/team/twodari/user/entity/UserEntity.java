@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Table(name = "TB_USER")
+@Table(name = "tb_user")
 @Entity
 @ToString
 @Getter
