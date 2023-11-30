@@ -66,6 +66,9 @@ dependencies {
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
 
+    //쿠키 뽑기위해서 cookie.get
+    implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+
 
 
 

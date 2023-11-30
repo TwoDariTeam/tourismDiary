@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,9 @@ public class JwtFilter extends GenericFilterBean {
             Map<String, String> resultMap = tokenProvider.validateToken(jwt);
             if (resultMap.get("result").equals("SUCCESS")) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
+//                Authentication authentication = tokenProvider.getCookie(jwt);
+             getCookie(httpServletRequest);
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
             } else {
@@ -65,6 +69,26 @@ public class JwtFilter extends GenericFilterBean {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    private  void getCookie(HttpServletRequest httpServletRequest){
+        Cookie[] cookies = httpServletRequest.getCookies();
+        String jwt = null;
+        if(cookies!= null){
+            for(Cookie cookie : cookies){
+                if("token".equals(cookie.getName())){
+                    jwt=cookie.getValue();
+                    break;
+                }
+            }
+        }
+        Authentication checkResult = tokenProvider.getAuthentication(jwt);
+        if(jwt!=null && checkResult!=null){
+            Authentication authentication = tokenProvider.getAuthentication(jwt);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        }
+
     }
 
 }
