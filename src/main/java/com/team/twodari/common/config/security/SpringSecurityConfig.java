@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -34,7 +37,7 @@ public class SpringSecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/h2-console/**",
-                                        "/**", "/user/login", "/user/create", "/user/compareId/**","/console-path/**").permitAll() // 모든 경로에 대한 접근을 허용
+                                        "/**", "/user/login", "/user/create", "/user/compareId/**", "/console-path/**").permitAll() // 모든 경로에 대한 접근을 허용
                                 .requestMatchers("/admin").hasRole(UserRoleConfig.UserRole.ADMIN.toString())
 
                 )
@@ -62,6 +65,22 @@ public class SpringSecurityConfig {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
+
+    public void someControllerMethod() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            String username = null;
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                username = userDetails.getUsername();
+            } else {
+                username = principal.toString(); // 필요에 따라 다른 방식으로 처리
+            }
+        }
+    }
+}
 //
 //    @Bean
 //    public WebSecurityCustomizer webSecurityCustomizer() {
@@ -73,4 +92,4 @@ public class SpringSecurityConfig {
 //                .requestMatchers(new AntPathRequestMatcher( "/img/**"))
 //                .requestMatchers(new AntPathRequestMatcher( "/lib/**"));
 //    }
-}
+

@@ -4,7 +4,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,14 +33,15 @@ public class JwtFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+
         String jwt = resolveToken(httpServletRequest); //head에서 토큰을 추출한다
+        System.out.println("토큰 유무 판정기입니다."+jwt);
         String requestURI = httpServletRequest.getRequestURI(); //현재 요청 url
         if (StringUtils.hasText(jwt)) {
             Map<String, String> resultMap = tokenProvider.validateToken(jwt);
             if (resultMap.get("result").equals("SUCCESS")) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
-//                Authentication authentication = tokenProvider.getCookie(jwt);
-             getCookie(httpServletRequest);
+//             getCookie(httpServletRequest);
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
@@ -71,24 +71,5 @@ public class JwtFilter extends GenericFilterBean {
         return null;
     }
 
-    private  void getCookie(HttpServletRequest httpServletRequest){
-        Cookie[] cookies = httpServletRequest.getCookies();
-        String jwt = null;
-        if(cookies!= null){
-            for(Cookie cookie : cookies){
-                if("token".equals(cookie.getName())){
-                    jwt=cookie.getValue();
-                    break;
-                }
-            }
-        }
-        Authentication checkResult = tokenProvider.getAuthentication(jwt);
-        if(jwt!=null && checkResult!=null){
-            Authentication authentication = tokenProvider.getAuthentication(jwt);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        }
-
-    }
 
 }
