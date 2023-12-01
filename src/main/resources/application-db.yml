@@ -10,6 +10,6 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       format_sql: true
     generate-ddl: true
