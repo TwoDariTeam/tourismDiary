@@ -20,7 +20,6 @@ public class UserEntity extends BaseEntity {
     @Column(columnDefinition = "INT")
     private Long userSeq;
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoardEntity> boards = new ArrayList<>();
 
