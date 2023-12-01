@@ -1,7 +1,11 @@
 package com.team.twodari.subBoard.dto;
 
+import com.team.twodari.image.entity.SubBoardImageEntity;
+import com.team.twodari.subBoard.entity.SubBoardEntity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @ToString
@@ -12,5 +16,9 @@ public class SubBoardReadDto {
     @NotBlank
     private String contents;
 
-    // 이미지 나중에 추가
+    private List<SubBoardImageEntity> subBoardImages;
+
+    public static SubBoardReadDto fromEntity(SubBoardEntity entity) {
+        return new SubBoardReadDto(entity.getContents(), entity.getImages());
+    }
 }

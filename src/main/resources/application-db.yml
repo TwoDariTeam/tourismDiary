@@ -1,0 +1,15 @@
+spring:
+  h2:
+    console:
+      enabled: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=UTC&useSSL=false
+    username: ${DATABASE.USERNAME}
+    password: ${DATABASE.PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      format_sql: true
+    generate-ddl: true

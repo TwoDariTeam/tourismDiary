@@ -1,7 +1,9 @@
 package com.team.twodari.subBoard.controller;
 
+import com.team.twodari.subBoard.dto.SubBoardReadDto;
 import com.team.twodari.subBoard.dto.SubBoardCreateDto;
 import com.team.twodari.subBoard.dto.SubBoardUpdateDto;
+import com.team.twodari.subBoard.entity.SubBoardEntity;
 import com.team.twodari.subBoard.service.SubBoardService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,16 @@ public class SubBoardController {
         }
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서브보드 작성 실패");
+    }
+
+    @GetMapping("/{subBoardSeq}")
+    public ResponseEntity<SubBoardReadDto> getSubBoardBySeq(@PathVariable Long subBoardSeq) {
+        SubBoardEntity subBoard = subBoardService.getSubBoard(subBoardSeq);
+
+        if (subBoard == null) return ResponseEntity.notFound().build();
+
+        SubBoardReadDto boardReadDto = SubBoardReadDto.fromEntity(subBoard);
+        return ResponseEntity.ok(boardReadDto);
     }
 
     @PutMapping("/{subBoardSeq}")

@@ -31,7 +31,7 @@ public class BoardMyPageRepositoryImpl implements BoardMyPageRepository {
                         BoardOwnResponse.class,
                         boardEntity.boardSeq,
                         boardEntity.categorySeq,
-                        boardEntity.author,
+                        boardEntity.user.nickname,
                         boardEntity.title,
                         pointEntity.point.sum(),
                         boardEntity.createTime,
@@ -39,7 +39,7 @@ public class BoardMyPageRepositoryImpl implements BoardMyPageRepository {
                 ))
                 .from(boardEntity)
                 .leftJoin(pointEntity).on(boardEntity.boardSeq.eq(pointEntity.boardSeq))
-                .where(boardEntity.author.eq(nickname))
+                .where(boardEntity.user.nickname.eq(nickname))
                 .groupBy(boardEntity.boardSeq)
                 .orderBy(boardEntity.createTime.desc())
                 .offset(page * PAGE_SIZE)
@@ -49,7 +49,7 @@ public class BoardMyPageRepositoryImpl implements BoardMyPageRepository {
         Long count = jpaQueryFactory		// (4)
                 .select(boardEntity.count())
                 .from(boardEntity)
-                .where(boardEntity.author.eq(nickname))
+                .where(boardEntity.user.nickname.eq(nickname))
                 .fetchOne();
 
         return new PageImpl<>(result, PageRequest.of(page, PAGE_SIZE), count);
@@ -62,7 +62,7 @@ public class BoardMyPageRepositoryImpl implements BoardMyPageRepository {
                         BoardMyLikedResponse.class,
                         boardEntity.boardSeq,
                         boardEntity.categorySeq,
-                        boardEntity.author,
+                        boardEntity.user.nickname,
                         boardEntity.title,
                         pointEntity.point.sum(),
                         boardEntity.createTime,

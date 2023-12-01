@@ -1,7 +1,7 @@
 package com.team.twodari.board.dto;
 
 import com.team.twodari.board.entity.BoardEntity;
-import com.team.twodari.subBoard.entity.SubBoardEntity;
+import com.team.twodari.image.entity.BoardImageEntity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -22,9 +22,9 @@ public class BoardReadDto {
     @NotBlank
     private String introduce;
 
-    private List<SubBoardEntity> subBoards;
+    private List<BoardImageEntity> boardImages;
 
-    public static BoardReadDto fromEntity(BoardEntity entity, List<SubBoardEntity> subBoards) {
-        return new BoardReadDto(entity.getAuthor(), entity.getTitle(), entity.getIntroduce(), subBoards);
+    public static BoardReadDto fromEntity(BoardEntity entity) {
+        return new BoardReadDto(entity.getUser().getNickname(), entity.getTitle(), entity.getIntroduce(), entity.getImages());
     }
 }

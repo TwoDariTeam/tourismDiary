@@ -9,6 +9,7 @@ import com.team.twodari.common.security.jwt.TokenProvider;
 import com.team.twodari.global.infrastructure.TourApiService;
 import com.team.twodari.image.service.BoardImageService;
 import com.team.twodari.image.service.SubBoardImageService;
+import com.team.twodari.image.service.UserImageService;
 import com.team.twodari.platform.service.PlatformService;
 import com.team.twodari.subBoard.service.SubBoardService;
 import com.team.twodari.tag.service.TagService;
@@ -54,10 +55,13 @@ public abstract class BaseControllerTest {
     protected SubBoardImageService subBoardImageService;
 
     @MockBean
+    protected UserImageService userImageService;
+
+    @MockBean
     protected TourApiService tourApiService;
 
     @MockBean
-    protected UserService   userService;
+    protected UserService userService;
 
     @MockBean
     protected JwtFilter jwtFilter;

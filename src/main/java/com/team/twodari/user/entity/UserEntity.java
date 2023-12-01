@@ -1,13 +1,16 @@
 package com.team.twodari.user.entity;
 
+import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Table(name = "tb_user")
+import java.util.ArrayList;
+import java.util.List;
+
+@Table(name = "TB_USER")
 @Entity
-@ToString
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,6 +19,9 @@ public class UserEntity extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
     private Long userSeq;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BoardEntity> boards = new ArrayList<>();
 
     // 이메일
     @NotBlank

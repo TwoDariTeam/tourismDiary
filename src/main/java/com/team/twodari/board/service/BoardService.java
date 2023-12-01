@@ -4,25 +4,36 @@ import com.team.twodari.board.dto.BoardCreateDto;
 import com.team.twodari.board.dto.BoardUpdateDto;
 import com.team.twodari.board.entity.BoardEntity;
 import com.team.twodari.board.repository.BoardRepository;
+import com.team.twodari.user.entity.LoginEntityImpl;
+import com.team.twodari.user.entity.UserEntity;
+import com.team.twodari.user.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@Transactional
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
-    public BoardService(BoardRepository boardRepository) {
+    public BoardService(BoardRepository boardRepository, UserRepository userRepository) {
         this.boardRepository = boardRepository;
+        this.userRepository = userRepository;
     }
 
-    public Long createBoard(BoardCreateDto createDto) {
+    public Long createBoard(BoardCreateDto createDto, UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        UserEntity user = userRepository.findByNickname(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         BoardEntity board = BoardEntity.builder()
-                .author(createDto.getAuthor())
+                .user(user)
                 .title(createDto.getTitle())
                 .introduce(createDto.getIntroduce())
-                .accessRole(createDto.getAccessRole())
                 .build();
         boardRepository.save(board);
 
@@ -31,26 +42,44 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public BoardEntity getBoardBySeq(Long boardSeq) {
-        return boardRepository.findById(boardSeq)
+        return boardRepository.findByBoardSeqWithImages(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
     }
 
-    @Transactional
-    public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto) {
+    public Long updateBoard(Long boardSeq, BoardUpdateDto updateDto, String logInUserNickname) {
+        String boardAuthor = getBoardAuthor(boardSeq);
+
+        // 현재 로그인한 유저와 게시글 작성자가 동일한지 확인
+        if (!logInUserNickname.equals(boardAuthor)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 작성자가 아닌 사용자는 수정 할 수 없습니다.");
+        }
+
         BoardEntity board = boardRepository.findById(boardSeq)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
-        board.updateEntity(updateDto.getTitle(), updateDto.getIntroduce(), updateDto.getAccessRole());
-        boardRepository.save(board);
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
+
+        board.updateEntity(updateDto.getTitle(), updateDto.getIntroduce());
 
         return board.getBoardSeq();
     }
 
-    @Transactional
-    public void deleteBoard(Long boardSeq) {
+    public void deleteBoard(Long boardSeq, String logInUserNickname) {
+        String boardAuthor = getBoardAuthor(boardSeq);
+
+        if (!logInUserNickname.equals(boardAuthor)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 작성자가 아닌 사용자는 삭제 할 수 없습니다.");
+        }
+
         BoardEntity board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
-        board.deleteEntity();
 
-        boardRepository.save(board);
+        board.deleteEntity();
+    }
+
+    private String getBoardAuthor(Long boardSeq) {
+        BoardEntity board = boardRepository.findById(boardSeq)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다"));
+
+        UserEntity boardUser = board.getUser();
+        return (boardUser != null) ? boardUser.getNickname() : null;
     }
 }
