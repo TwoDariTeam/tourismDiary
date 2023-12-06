@@ -1,0 +1,11 @@
+spring:
+  h2:
+    console:
+      enabled: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://118.67.130.31:3306/2team?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=UTC&useSSL=false
+    username: tour01
+    password: 1234
+
+

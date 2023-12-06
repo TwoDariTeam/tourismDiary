@@ -1,9 +1,7 @@
 package com.team.twodari.user.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Null;
+import com.team.twodari.common.constant.RegularExpression;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,8 +12,7 @@ import lombok.NoArgsConstructor;
 //레코드 불변 객체. (.?)
 public class CreateUser {
     @NotBlank
-    @Max(40)
-    @Min(1)
+    @Email
     private  String email;
 
     @NotBlank
@@ -24,8 +21,7 @@ public class CreateUser {
     private  String nickname;
 
     @NotBlank
-    @Max(24)
-    @Min(1)
+    @Pattern(regexp = RegularExpression.PASSWORD_NUM_LOW_ENG_UPP_ENG_PATTERN)
     private  String password;
     @Null
     private  String createName;

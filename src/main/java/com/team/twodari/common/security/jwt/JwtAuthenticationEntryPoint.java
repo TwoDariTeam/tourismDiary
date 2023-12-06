@@ -17,15 +17,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         // 유효한 자격증명을 제공하지 않고 접근하려 할때 401에러를 발생시킨다
-        //System.out.println("#################################################################");
-
         Map<String, String> map = (Map<String, String>) request.getAttribute("tokenexception");
         if (map == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        //코드는 별도로 정의를 하지 않아서 임의로 1을 보내고 있으나 별도의 정의가 필요하다고 본다
-        //가급적 상수를 만들어 처리하거나 디비에 테이블을 만들어서 에러코드와 메시지를 별도로 정리하자
         setResponse(response, 1, map.get("msg"));
 
 

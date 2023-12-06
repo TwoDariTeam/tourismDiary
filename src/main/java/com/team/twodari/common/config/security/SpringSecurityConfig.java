@@ -22,8 +22,6 @@ import java.util.Arrays;
 @EnableWebSecurity
 @Configuration
 public class SpringSecurityConfig {
-    //여기서 필터 설정 잡고 JWT 필터로 넘겨서 통합해보자.
-    //여기 설정을 다시 잡고 넘어가자 11-25
     private final JwtFilter jwtFilter;
 //    private final CorsFilter corsFilter;
 
@@ -37,7 +35,8 @@ public class SpringSecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/h2-console/**",
-                                        "/**", "/user/login", "/user/create", "/user/compareId/**", "/console-path/**").permitAll() // 모든 경로에 대한 접근을 허용
+                                        "/**", "/user/login", "/user/create", "/user/compareId/**","/user/logout","/user/searchPw").permitAll() // 모든 경로에 대한 접근을 허용
+                                .requestMatchers("/board/**","/image/**").hasRole(UserRoleConfig.UserRole.USER.toString())
                                 .requestMatchers("/admin").hasRole(UserRoleConfig.UserRole.ADMIN.toString())
 
                 )

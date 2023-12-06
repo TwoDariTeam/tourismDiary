@@ -26,7 +26,4 @@ public class ComResponseEntity<T> extends ResponseEntity<ComResponseDTO<T>> {
         super(body, HttpStatus.OK);
     }
 
-    //토큰용
-
-
 }

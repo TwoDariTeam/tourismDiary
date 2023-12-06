@@ -1,6 +1,7 @@
 package com.team.twodari.user.service;
 
 import com.team.twodari.common.constant.Constant;
+import com.team.twodari.common.constant.UserRoleConfig;
 import com.team.twodari.common.dto.TokenDTO;
 import com.team.twodari.common.security.jwt.TokenProvider;
 import com.team.twodari.global.util.PasswordGenerator;
@@ -29,15 +30,12 @@ public class UserService {
 
 
     //로그인 메서드
-    // Token 반환
-    //시큐리티 컨텍스트에 저장이 안되는듯
     public Optional<TokenDTO> login(Login login) {
         UserEntity userEntity = userRepository.findByEmail(login.getEmail()).orElseThrow(); //이메일로 이메일, 닉네임, 비밀번호, 권한레벨 반환
         RoleEntity roleEntity = userRoleRepository.findByUserSeq(userEntity.getUserSeq()).orElseThrow();
         if (passwordEncoder.matches(login.getPassword(), userEntity.getPassword())) {
             Authentication authenticationToken = tokenProvider.convertAuthentication(roleEntity, userEntity);
             TokenDTO tokenDTO = tokenProvider.createToken(authenticationToken);
-            System.out.println("result login"+tokenDTO);
             return Optional.of(tokenDTO);
         } else {
             throw new BadCredentialsException(Constant.PASSWORD_COMPARE_FALSE_MESG);
@@ -74,7 +72,7 @@ public class UserService {
     private boolean createUserRole(Long userSeq) {
         RoleEntity saveEntity = userRoleRepository.save(RoleEntity.builder()
                 .userSeq(userSeq)
-                .roleSeq(7L)
+                .roleSeq(UserRoleConfig.UserRole.USER.getLevel())
                 .build());
         return saveEntity != null;
     }
@@ -89,12 +87,11 @@ public class UserService {
         return resultMesg;
     }
 
-    //유저 변경 현재 이메일만 변경 가능 사진은? 어찌 구현?
-    //이구간 compardNickName= false로 나옴.
+    //추후 구현
     public String updateUserInfo(UpdateUserInfo updateUserInfo) {
         String resultMesg = Constant.FALSE_MESG;
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(updateUserInfo.getEmail());
-        UserEntity compareNickname = userRepository.findByNickname(updateUserInfo.getNickname()); // 문제 구간 객체를 반환하는 것 같다. true false값이 필요한데
+        UserEntity compareNickname = userRepository.findByNickname(updateUserInfo.getNickname());
         boolean nullCheckNickName = (compareNickname == null) ? handleUpdateUserInfo(searchUserInfo, updateUserInfo) : false;
         if (nullCheckNickName)
             resultMesg = Constant.SUCCESS_MESG;
@@ -132,10 +129,7 @@ public class UserService {
         return newPassword;
     }
 
-    //이메일만 맞다고 비밀번호를 줘?
-    //해당 이메일로 보내는 기능이 좋을 듯 시간 구현가능?
-    //해당 이메일로 무엇을 줘야할까요? 비밀번호를 수정하고 난 랜덤비밀번호 설정하고 보여주기까지 구현
-    //랜덤 비밀번호는 (정규식 패턴) (영어,숫자 ,특수문자 한개 이상) 포함한 8글자 이상
+    //가입한 이메일로 임시 비밀번호 전송.
     public String searchPassword(SearchPassword searchPassword) {
         Optional<UserEntity> searchUserInfo = userRepository.findUserByEmail(searchPassword.getEmail());
         String resultMesg = Constant.FALSE_MESG;

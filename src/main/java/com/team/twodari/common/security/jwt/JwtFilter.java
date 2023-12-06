@@ -1,5 +1,6 @@
 package com.team.twodari.common.security.jwt;
 
+import com.team.twodari.common.constant.UserRoleConfig;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -33,9 +34,7 @@ public class JwtFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-
         String jwt = resolveToken(httpServletRequest); //head에서 토큰을 추출한다
-        System.out.println("토큰 유무 판정기입니다."+jwt);
         String requestURI = httpServletRequest.getRequestURI(); //현재 요청 url
         if (StringUtils.hasText(jwt)) {
             Map<String, String> resultMap = tokenProvider.validateToken(jwt);
@@ -66,7 +65,7 @@ public class JwtFilter extends GenericFilterBean {
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(UserRoleConfig.UserRole.USER.getLevel().intValue());
         }
         return null;
     }
